@@ -1,0 +1,3 @@
+
+
+estados = ['En Aduana', 'Salio']

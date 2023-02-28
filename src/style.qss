@@ -1,0 +1,118 @@
+QMainWindow {
+    background-color: "#222";
+    color: "#eee"
+}
+QWidget {
+    background-color: "#333";
+    color: "#fff";
+    padding: 0px
+}
+QTableWidget {
+    border: 1px solid "#222";
+    padding: 0px;
+    font-family: "Segoe UI";
+    font-size: 14px;
+    alternate-background-color: "#424242"
+}
+QTableWidget::item:selected {
+    background-color: "#3388ff"
+}
+QTableWidget QTableCornerButton::section {
+    background-color: "#292929";
+    border: 1px;
+    padding: 0px
+}
+QHeaderView, QHeaderView::section {
+    background-color: "#292929";
+    color: "#eee";
+    font-size: 15px;
+    border: 1px;
+    border-radius: 2px;
+    padding: 0px
+}
+
+QLineEdit {
+  background-color: "#9c9f9f";
+  color: "#000"; 
+  border-width: 1px;
+  border-radius: 2px;
+  padding-left: 10px;
+}
+
+QLineEdit:focus {
+  background-color: "#9c9f9f";
+  color: "#000";
+  border-style: solid; 
+  border-radius: 2px;
+  border-color: "#3388ff";
+  border-width: 2px;
+  padding-left: 10px;
+}
+
+QScrollBar {
+  border-radius: 2px;
+  background: "#000"
+}
+
+QPushButton {
+  padding: 5px 10px 5px 10px;
+
+}
+
+
+QScrollBar:vertical {
+    width: 20px;
+    border-radius: 2px;
+    margin: 20px 0 20px 0;
+    background: #202020;
+  }
+
+
+QScrollBar::handle:vertical {
+    border: 5px solid grey;
+    border-radius: 2px;
+    background: white;
+    min-height: 10px;
+  }
+
+QScrollBar::add-line:vertical {
+                    border: 2px solid grey;
+                    border-radius: 2px;
+                    background: none;
+                    height: 20px;
+                    subcontrol-position: bottom;
+                    subcontrol-origin: margin;
+                  }
+
+QScrollBar::sub-line:vertical {
+                    border: 2px solid grey;
+                    border-radius: 2px;
+                    background: none;
+                    height: 20px;
+                    subcontrol-position: top;
+                    subcontrol-origin: margin;
+                  }
+
+
+
+QScrollBar::handle:vertical {
+                    border: 10px solid grey;
+                    border-radius: 2px;
+                    background: white;
+                    min-height: 10px;
+                  }
+
+QScrollBar::up-arrow:vertical {
+                    border: 5px solid grey;
+                    border-radius: 2px;
+                    height: 20px; 
+                    width: 20px 
+                  }
+
+QScrollBar::down-arrow:vertical{
+                    border: 5px solid grey;
+                    border-radius: 2px;
+                    height: 20px; 
+                    width: 20px                              
+                  }
+
