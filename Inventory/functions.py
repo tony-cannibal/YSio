@@ -28,8 +28,6 @@ def set_port():
             ser_bytes = ser.read(8)
             if ser_bytes:
                 port = i
-            # print(i)
-            # print(ser_bytes.decode('ascii'))
             ser.close()
         except:
             pass
@@ -60,7 +58,7 @@ def get_machines(area:str, sub_area:str, database:dict)->list:
     return res
 
 def capture_value(item:list, equipo:str, sub_area:str,database:dict):
-    print(item)
+    # print(item)
     con = mariadb.connect(**database)
     cur = con.cursor()
     cur.execute('''
@@ -75,7 +73,7 @@ def capture_value(item:list, equipo:str, sub_area:str,database:dict):
           item[8], item[4], equipo, item[6], sub_area, 
           item[7]))
     con.commit()
-    print('this should commit')
+    # print('this should commit')
     cur.close()
 
 def read_weight(puerto):
@@ -86,8 +84,7 @@ def read_weight(puerto):
         stopbits=serial.STOPBITS_ONE,
         bytesize=serial.EIGHTBITS,
         timeout=1,
-        write_timeout=1
-    )
+        write_timeout=1)
     ser.write('P'.encode('ascii'))
     weight = ser.read(8).decode('ascii').strip()
     return weight
