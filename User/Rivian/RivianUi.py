@@ -148,9 +148,9 @@ class Rivian(QWidget):
         self.spacer2 = QSpacerItem(
             30, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.row_spacer = QSpacerItem(
-            30, 80, QSizePolicy.Expanding, QSizePolicy.Fixed)
+            30, 60, QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.row_spacer2 = QSpacerItem(
-            50, 100, QSizePolicy.Expanding, QSizePolicy.Fixed)
+            50, 50, QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.row_spacer3 = QSpacerItem(
             30, 40, QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.column_spacer = QSpacerItem(
