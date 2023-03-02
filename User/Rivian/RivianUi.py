@@ -23,7 +23,7 @@ class Rivian(QWidget):
         self.database = db
         self.today = today
         self.path = path
-        self.port = [ fn.set_port() if fn.set_port() else '0' ]
+        self.port = [fn.set_port() if fn.set_port() else '0']
 
         self.inventory = fn.get_riv_lots(self.database)
         self.history = fn.get_riv_inv(self.database, self.today)
@@ -55,11 +55,13 @@ class Rivian(QWidget):
         self.frame1 = QFrame()
         self.frame1.setStyleSheet(cn.frame_style)
         self.frame1.setSizePolicy(QSizePolicy.Expanding,
-            QSizePolicy.Expanding)
+                                  QSizePolicy.Expanding)
         frame1_layout = QGridLayout()
         self.frame1.setLayout(frame1_layout)
 
-        labelFont = QFont(QFont('Consolas', 14))
+        tableFont = QFont(QFont('Consolas', 10))
+
+        labelFont = QFont(QFont('Consolas', 12))
         labelFont.setBold(True)
 
         self.line_scan = QLineEdit()
@@ -71,7 +73,7 @@ class Rivian(QWidget):
 
         self.rev = QLabel()
         self.rev.setSizePolicy(QSizePolicy.Expanding,
-                                  QSizePolicy.Fixed)
+                               QSizePolicy.Fixed)
         self.rev.setText('REV: ')
         self.rev.setFont(labelFont)
 
@@ -111,7 +113,6 @@ class Rivian(QWidget):
         self.artesa_grande = QRadioButton("Artesa Grande")
         self.sin_tara = QRadioButton("Sin Tara")
 
-
         self.table_1 = QTableWidget()
         self.table_1.setColumnCount(11)
         self.table_1.setAlternatingRowColors(True)
@@ -119,11 +120,13 @@ class Rivian(QWidget):
         for i in range(11):
             self.table_1.setColumnWidth(i, cn.header_width[i])
         self.table_1.verticalHeader().setVisible(False)
-        self.table_1.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table_1.setEditTriggers(
+            QtWidgets.QAbstractItemView.NoEditTriggers)
         self.table_1.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+        self.table_1.setFont(tableFont)
 
         self.logo = QPixmap(f'{self.path}/src/rivian.png')
-        self.label_logo =  QLabel()
+        self.label_logo = QLabel()
         self.label_logo.setStyleSheet('''
             border-style: solid;
             border-color: black;
@@ -133,18 +136,25 @@ class Rivian(QWidget):
             background: none;
             ''')
         self.label_logo.setSizePolicy(QSizePolicy.Expanding,
-                                    QSizePolicy.Expanding)
-        self.label_logo.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignBottom)
+                                      QSizePolicy.Expanding)
+        self.label_logo.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignBottom)
         # self.label_logo.setMaximumHeight(50)
         self.label_logo.setPixmap(self.logo.scaled(78, 78,
-            QtCore.Qt.KeepAspectRatio))
+                                                   QtCore.Qt.KeepAspectRatio))
 
-        self.spacer1 = QSpacerItem(30, 30, QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.spacer2 = QSpacerItem(30, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.row_spacer = QSpacerItem(30, 80, QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.row_spacer2 = QSpacerItem(50, 100, QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.row_spacer3 = QSpacerItem(30, 40, QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.column_spacer = QSpacerItem(30, 30, QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.spacer1 = QSpacerItem(
+            30, 30, QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.spacer2 = QSpacerItem(
+            30, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.row_spacer = QSpacerItem(
+            30, 80, QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.row_spacer2 = QSpacerItem(
+            50, 100, QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.row_spacer3 = QSpacerItem(
+            30, 40, QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.column_spacer = QSpacerItem(
+            30, 30, QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         # Widgets
         frame1_layout.addWidget(self.line_scan, 1, 1, 1, 3)
@@ -169,11 +179,10 @@ class Rivian(QWidget):
 
         frame1_layout.addWidget(self.table_1,  9, 1, 1, 8)
 
-
         # Spacers
         frame1_layout.addItem(self.row_spacer2, 0, 1)
 
-        frame1_layout.addItem(self.spacer2, 1, 3, 1 ,3)
+        frame1_layout.addItem(self.spacer2, 1, 3, 1, 3)
 
         frame1_layout.addItem(self.row_spacer, 2, 1)
         frame1_layout.addItem(self.row_spacer, 2, 2)
@@ -199,7 +208,7 @@ class Rivian(QWidget):
         self.frame2 = QFrame()
         self.frame2.setStyleSheet(cn.frame_style)
         self.frame2.setSizePolicy(QSizePolicy.Expanding,
-            QSizePolicy.Expanding)
+                                  QSizePolicy.Expanding)
         frame2_layout = QGridLayout()
 
         self.search_line = QLineEdit()
@@ -221,8 +230,10 @@ class Rivian(QWidget):
         for i in range(12):
             self.table_history.setColumnWidth(i, cn.header_width2[i])
         self.table_history.verticalHeader().setVisible(False)
-        self.table_history.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.table_history.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
+        self.table_history.setEditTriggers(
+            QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table_history.setSelectionBehavior(
+            QtWidgets.QTableView.SelectRows)
 
         frame2_layout.addWidget(self.search_line, 1, 1, 1, 2)
         # frame2_layout.addWidget(self.date1, 1, 3)
@@ -239,7 +250,6 @@ class Rivian(QWidget):
         frame2_layout.addItem(self.row_spacer, 0, 5)
         frame2_layout.addItem(self.row_spacer, 0, 6)
         frame2_layout.addItem(self.column_spacer, 0, 7)
-
 
         frame2_layout.addItem(self.row_spacer, 2, 1)
         frame2_layout.addItem(self.row_spacer, 4, 1)
@@ -306,7 +316,6 @@ class Rivian(QWidget):
         tab2_layout.addItem(self.row_spacer3, 6, 1)
 
 
-
 #########################################################################
 
         self.tab_widget.addTab(self.tab1, 'Rivian')
@@ -318,7 +327,6 @@ class Rivian(QWidget):
         self.error = QMessageBox()
         self.error.setWindowTitle('Error')
         self.error.setIcon(QMessageBox.Critical)
-
 
         self.info = QMessageBox()
         self.info.setWindowTitle('Error')
@@ -367,15 +375,16 @@ class Rivian(QWidget):
         self.state.setText('Bascula Conectada.')
         self.state.setStyleSheet('color: green; border-width: 0px;')
 
-
     def update_table3(self):
         self.table3.setRowCount(len(self.rivian))
         # row_labels = []
         tablerow = 0
         for row in self.rivian:
             for i in range(11):
-                self.table3.setItem(tablerow, i, QtWidgets.QTableWidgetItem(str(row[i])))
-                self.table3.item(tablerow, i).setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table3.setItem(
+                    tablerow, i, QtWidgets.QTableWidgetItem(str(row[i])))
+                self.table3.item(tablerow, i).setTextAlignment(
+                    QtCore.Qt.AlignCenter)
             tablerow += 1
 
     def update_history(self):
@@ -383,8 +392,10 @@ class Rivian(QWidget):
         tablerow = 0
         for row in self.history:
             for i in range(11):
-                self.table_1.setItem(tablerow, i, QtWidgets.QTableWidgetItem(str(row[i+1])))
-                self.table_1.item(tablerow, i).setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table_1.setItem(
+                    tablerow, i, QtWidgets.QTableWidgetItem(str(row[i+1])))
+                self.table_1.item(tablerow, i).setTextAlignment(
+                    QtCore.Qt.AlignCenter)
             tablerow += 1
 
     def update_table_search(self):
@@ -392,8 +403,10 @@ class Rivian(QWidget):
         tablerow = 0
         for row in self.result:
             for i in range(12):
-                self.table_history.setItem(tablerow, i, QtWidgets.QTableWidgetItem(str(row[i])))
-                self.table_history.item(tablerow, i).setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table_history.setItem(
+                    tablerow, i, QtWidgets.QTableWidgetItem(str(row[i])))
+                self.table_history.item(tablerow, i).setTextAlignment(
+                    QtCore.Qt.AlignCenter)
             tablerow += 1
 
     def find_records(self):
@@ -427,7 +440,7 @@ class Rivian(QWidget):
         else:
             lot = code
         if lot not in self.inventory:
-            result= fn.lot_search(lot, self.database)
+            result = fn.lot_search(lot, self.database)
             if result != None:
                 search = list(result)
                 search[2] = search[2].strftime("%Y-%m-%d")
@@ -436,7 +449,8 @@ class Rivian(QWidget):
             else:
                 self.current = []
                 self.clean_labels()
-                self.inv_error.setText('El lote no se encuentra enla base de Datos')
+                self.inv_error.setText(
+                    'El lote no se encuentra enla base de Datos')
                 self.inv_error.exec_()
                 self.line_scan.setFocus()
         else:
@@ -444,19 +458,20 @@ class Rivian(QWidget):
             self.inv_error.exec_()
         self.line_scan.setText("")
 
-
     def get_file_input(self):
         try:
             file = QFileDialog.getOpenFileName(
                 self, caption='Buscar Archivo',
-                directory='/'.join(os.path.expanduser('~').split('\\'))+'/Documents',
-                filter="Excel (*.xlsx)" ,options=QFileDialog.Options())
+                directory='/'.join(os.path.expanduser('~').split('\\')
+                                   )+'/Documents',
+                filter="Excel (*.xlsx)", options=QFileDialog.Options())
             file = file[0]
 
             part = fn.get_riv_part(self.database)
             self.rivian = fn.get_riv_input_2(file, part)
             file = file[1:].split('/')[-1]
-            self.file_label.setText(f'Archivo: <font color="blue">  {file}</font>')
+            self.file_label.setText(
+                f'Archivo: <font color="blue">  {file}</font>')
             self.update_table3()
         except FileNotFoundError:
             pass
@@ -464,7 +479,7 @@ class Rivian(QWidget):
     def save_input(self):
         input_data = fn.get_database_input(self.database)
         if self.rivian:
-            duplicates = [i[0] for i in self.rivian if i[0] in input_data ]
+            duplicates = [i[0] for i in self.rivian if i[0] in input_data]
             for i in self.rivian:
                 if i[0] not in duplicates:
                     fn.save_input(i, self.database)
@@ -517,33 +532,36 @@ class Rivian(QWidget):
         cantidad = self.cant.text()
         if not self.current:
             return
-        if int(cantidad) <= 0 :
-            self.error.setText('El valor debe coincidir con el valor de piezas')
+        if int(cantidad) <= 0:
+            self.error.setText(
+                'El valor debe coincidir con el valor de piezas')
             self.error.exec_()
             return
         now = datetime.now().strftime('%H:%M:%S')
         peso = self.l_edit.text()
-        date = datetime(year=self.today[0], month=self.today[1], day=self.today[2]).strftime('%Y-%m-%d')
-        if int(cantidad) == self.current[8]:
-            record = [
-                self.noreloj, self.current[0], self.current[2], self.current[6], self.current[7],
-                self.current[3], self.current[4], self.current[5], now, date, peso, cantidad
-                ]
-            fn.upload_record(record, self.database)
-            self.history.append(record)
-            self.clean_labels()
-            self.l_edit.setText('0')
-            self.update_history()
-            self.inventory.append(self.current[0])
-            self.current = []
-            self.cant.setText('0')
-        else:
-            self.error.setText('El valor debe coincidir con el valor de piezas')
-            self.error.exec_()
+        date = datetime(
+            year=self.today[0], month=self.today[1], day=self.today[2]).strftime('%Y-%m-%d')
+        # if int(cantidad) == self.current[8]:
+        record = [
+            self.noreloj, self.current[0], self.current[2], self.current[6], self.current[7],
+            self.current[3], self.current[4], self.current[5], now, date, peso, cantidad
+        ]
+        fn.upload_record(record, self.database)
+        self.history.append(record)
+        self.clean_labels()
+        self.l_edit.setText('0')
+        self.update_history()
+        self.inventory.append(self.current[0])
+        self.current = []
+        self.cant.setText('0')
+        # else:
+        #     self.error.setText(
+        #         'El valor debe coincidir con el valor de piezas')
+        #     self.error.exec_()
 
     def ob_peso(self):
         if self.port[0] == '0':
-            self.port = [ fn.set_port() if fn.set_port() else '0' ]
+            self.port = [fn.set_port() if fn.set_port() else '0']
             if self.port[0] != '0':
                 self.port_message_good()
         if self.port[0] == '0':
@@ -562,9 +580,10 @@ class Rivian(QWidget):
         if self.result:
             save_name = QFileDialog.getSaveFileName(
                 self, caption='Guardar Archivo',
-                directory='/'.join(os.path.expanduser('~').split('\\'))+'/Documents',
+                directory='/'.join(os.path.expanduser('~').split('\\')
+                                   )+'/Documents',
                 filter="Excel (*.xlsx)"
-                 )
+            )
             fn.export_data(self.result, save_name[0])
         else:
             save_error = QMessageBox()
@@ -573,17 +592,18 @@ class Rivian(QWidget):
             save_error.setIcon(QMessageBox.Warning)
             save_error.exec_()
 
+
 def main():
     db = {
-            "host": "172.18.4.58",
-            "database": "yura_elaboracion",
-            "user": "yura_admin",
-            "password": "Metallica24+",
-            "port": 3306
-            }
+        "host": "172.18.4.58",
+        "database": "yura_elaboracion",
+        "user": "yura_admin",
+        "password": "Metallica24+",
+        "port": 3306
+    }
     path = 'C:/Users/YR PROD ORDER/Documents/Python/YSio - MariaDB'
     app = QApplication(sys.argv)
-    window = Rivian(17040267, db, [2023, 1 , 25], path)
+    window = Rivian(17040267, db, [2023, 1, 25], path)
     window.showMaximized()
     sys.exit(app.exec_())
 

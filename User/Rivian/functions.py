@@ -33,8 +33,6 @@ def set_port():
             ser_bytes = ser.read(8)
             if ser_bytes:
                 port = i
-            # print(i)
-            # print(ser_bytes.decode('ascii'))
             ser.close()
         except:
             pass

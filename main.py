@@ -28,8 +28,7 @@ class Controller:
 
     def show_main(self, name, area, sub_area, equipo, port):
         self.window = InventoryUi.Inventory(
-            name, area, sub_area, equipo, port, self.path, self.database
-            )
+            name, area, sub_area, equipo, port, self.path, self.database)
         self.login.close()
         self.window.show()
         self.window.showFullScreen()
@@ -50,4 +49,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
