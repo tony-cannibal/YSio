@@ -156,6 +156,9 @@ class Rivian(QWidget):
         self.column_spacer = QSpacerItem(
             30, 30, QSizePolicy.Fixed, QSizePolicy.Fixed)
 
+
+
+
         # Widgets
         frame1_layout.addWidget(self.line_scan, 1, 1, 1, 3)
         frame1_layout.addWidget(self.label_logo, 0, 7, 2, 2)
