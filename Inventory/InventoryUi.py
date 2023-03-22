@@ -112,7 +112,8 @@ class Inventory(QFrame):
         self.table_1.setColumnWidth(0, 100)
         self.table_1.setColumnWidth(1, 60)
         self.table_1.setColumnWidth(2, 120)
-        self.table_1.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table_1.setEditTriggers(
+            QtWidgets.QAbstractItemView.NoEditTriggers)
         # self.table_1.verticalHeader().setMinimumWidth(30)
         # self.table_1.verticalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
         self.table_1.setFont(QFont('Consolas', 8))
@@ -210,12 +211,14 @@ class Inventory(QFrame):
 
         self.codigo_yura = QLabel('Codigo Yura')
         self.codigo_yura.setFont(font2)
-        self.codigo_yura.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
+        self.codigo_yura.setAlignment(
+            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
         self.codigo_yura.setStyleSheet('padding-bottom: 0px;')
 
         self.codigo_proveedor = QLabel('Codigo Proveedor')
         self.codigo_proveedor.setFont(font2)
-        self.codigo_proveedor.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
+        self.codigo_proveedor.setAlignment(
+            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
         self.codigo_proveedor.setStyleSheet('padding-bottom: 0px;')
 
         self.tipo = QLabel('Tipo')
@@ -232,10 +235,14 @@ class Inventory(QFrame):
         self.status.setFont(font2)
         self.status.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.spacer = QSpacerItem(30, 30, QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.spacer1 = QSpacerItem(30, 30, QSizePolicy.Fixed, QSizePolicy.Expanding)
-        self.spacer2 = QSpacerItem(30, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.spacer3 = QSpacerItem(25, 25, QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.spacer = QSpacerItem(
+            30, 30, QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.spacer1 = QSpacerItem(
+            30, 30, QSizePolicy.Fixed, QSizePolicy.Expanding)
+        self.spacer2 = QSpacerItem(
+            30, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.spacer3 = QSpacerItem(
+            25, 25, QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         # Add Items to Frame 1
         grid_1.addWidget(self.label_main, 1, 1, 1, 6)
@@ -295,13 +302,15 @@ class Inventory(QFrame):
         self.error = QMessageBox()
         self.error.setWindowTitle('Error')
         self.error.setText('Cantidad No Valida')
-        self.error.setInformativeText("La cantidad no debe ser menor o igual a '0'.")
+        self.error.setInformativeText(
+            "La cantidad no debe ser menor o igual a '0'.")
         self.error.setIcon(QMessageBox.Critical)
 
         self.con_error = QMessageBox()
         self.con_error.setWindowTitle('Error')
         self.con_error.setText('La Bascula se a Desconectado')
-        self.con_error.setInformativeText("Verifica que la bascula este connectada correctamente.")
+        self.con_error.setInformativeText(
+            "Verifica que la bascula este connectada correctamente.")
         self.con_error.setIcon(QMessageBox.Critical)
 
         ##########################################################################################################
@@ -339,7 +348,8 @@ class Inventory(QFrame):
         self.table_2.setColumnWidth(4, 80)
         self.table_2.setColumnWidth(5, 90)
         self.table_2.setColumnWidth(6, 100)
-        self.table_2.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table_2.setEditTriggers(
+            QtWidgets.QAbstractItemView.NoEditTriggers)
         self.table_2.setFont(QFont('Consolas', 9))
 
         # Add Items to Frame 2
@@ -372,7 +382,8 @@ class Inventory(QFrame):
         ################################################################################################################
 
         # Autorun Functions
-        self.maquinas = fn.get_machines(self.area, self.sub_area, self.database)
+        self.maquinas = fn.get_machines(
+            self.area, self.sub_area, self.database)
         # if cable.lower() != 'cable':
         #     self.combo.addItem("")
         for i in self.maquinas:
@@ -408,7 +419,8 @@ class Inventory(QFrame):
             self.warning = QMessageBox()
             self.warning.setWindowTitle('Advertencia')
             self.warning.setIcon(QMessageBox.Information)
-            self.warning.setText('Verifica El Valor del Pkg Antes de Continuar.')
+            self.warning.setText(
+                'Verifica El Valor del Pkg Antes de Continuar.')
             self.warning.setInformativeText(
                 'Si el valor del pkg no coincide con la cantidad especificada en la etiqueta del articulo debera '
                 'introducir la cantidad del mismo como "cantidad".')
@@ -421,12 +433,18 @@ class Inventory(QFrame):
         self.table_1.setRowCount(len(res))
         tablerow = 0
         for row in res:
-            self.table_1.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[2]))
-            self.table_1.item(tablerow, 0).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[4]))
-            self.table_1.item(tablerow, 1).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[3]))
-            self.table_1.item(tablerow, 2).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 0, QtWidgets.QTableWidgetItem(row[2]))
+            self.table_1.item(tablerow, 0).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 1, QtWidgets.QTableWidgetItem(row[4]))
+            self.table_1.item(tablerow, 1).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 2, QtWidgets.QTableWidgetItem(row[3]))
+            self.table_1.item(tablerow, 2).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             self.table_1.setRowHeight(tablerow, 20)
             tablerow += 1
         self.table_1.setCurrentCell(1, 0)
@@ -487,7 +505,8 @@ class Inventory(QFrame):
                     tara = self.current_sel[8]
                 peso_ind = self.current_sel[5]
                 resultado = round(
-                    fn.calc_amount(tipo=tipo, weight=peso, ind_weight=peso_ind, tara=tara), 0
+                    fn.calc_amount(tipo=tipo, weight=peso,
+                                   ind_weight=peso_ind, tara=tara), 0
                 )
                 self.label_amount.setText(str(resultado))
             elif self.radio2.isChecked():
@@ -514,7 +533,8 @@ class Inventory(QFrame):
                   value]
             if float(self.line_2.text()) < cn.weight_limit[self.current_sel[4]] or value != 'Peso':
                 self.history.append(ob)
-                fn.capture_value(ob, self.equipo, self.sub_area.split()[0], self.database)
+                fn.capture_value(ob, self.equipo, self.sub_area.split()[
+                                 0], self.database)
                 self.display_history()
                 self.line_1.setText("")
                 self.line_2.setText("")
@@ -524,12 +544,12 @@ class Inventory(QFrame):
                 self.high_weight = QMessageBox()
                 self.high_weight.setWindowTitle('Error de Peso')
                 self.high_weight.setText('Peso Demaciado Alto.')
-                self.high_weight.setInformativeText('Verifica el estado de la bascula y del material.')
+                self.high_weight.setInformativeText(
+                    'Verifica el estado de la bascula y del material.')
                 self.high_weight.setIcon(QMessageBox.Critical)
                 self.high_weight.exec_()
         else:
             self.error.exec_()
-
 
     def display_history(self):
         self.table_2.setRowCount(len(self.history))
@@ -538,27 +558,39 @@ class Inventory(QFrame):
         for row in self.history:
             # Yura
             self.table_2.setItem(
-                    tablerow, 0, QtWidgets.QTableWidgetItem(row[1]))
+                tablerow, 0, QtWidgets.QTableWidgetItem(row[1]))
             self.table_2.item(
-                    tablerow, 0).setTextAlignment(QtCore.Qt.AlignCenter)
+                tablerow, 0).setTextAlignment(QtCore.Qt.AlignCenter)
             # Proveedor
-            self.table_2.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
-            self.table_2.item(tablerow, 1).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+            self.table_2.item(tablerow, 1).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             # Cantidad
-            self.table_2.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[3]))
-            self.table_2.item(tablerow, 2).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 2, QtWidgets.QTableWidgetItem(row[3]))
+            self.table_2.item(tablerow, 2).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             # peso
-            self.table_2.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[5]))
-            self.table_2.item(tablerow, 3).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 3, QtWidgets.QTableWidgetItem(row[5]))
+            self.table_2.item(tablerow, 3).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             # Maquina
-            self.table_2.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[4]))
-            self.table_2.item(tablerow, 4).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 4, QtWidgets.QTableWidgetItem(row[4]))
+            self.table_2.item(tablerow, 4).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             # Area
-            self.table_2.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(row[6]))
-            self.table_2.item(tablerow, 5).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 5, QtWidgets.QTableWidgetItem(row[6]))
+            self.table_2.item(tablerow, 5).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             # fecha
-            self.table_2.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[7]))
-            self.table_2.item(tablerow, 6).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 6, QtWidgets.QTableWidgetItem(row[7]))
+            self.table_2.item(tablerow, 6).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             self.table_2.setRowHeight(tablerow, 20)
             tablerow += 1
         for i in range(len(self.history)):
