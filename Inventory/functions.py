@@ -2,10 +2,10 @@ import mariadb
 import serial
 import serial.tools.list_ports
 
-try:
-    from . import constants as cn
-except ImportError:
-    import constants as cn
+# try:
+#     from . import constants as cn
+# except ImportError:
+#     import constants as cn
 
 
 def set_port():
@@ -29,35 +29,42 @@ def set_port():
             if ser_bytes:
                 port = i
             ser.close()
-        except:
+        except BaseException:
             pass
     return port
 
-def calc_amount(tipo:str, weight:float, ind_weight:float, tara:int, use_pkg=True)->int:
-        if not use_pkg:
-            tara = 0
-        if tipo.lower() == "sello":
-            return round((weight * 1000) / ind_weight, 1)
-        else:
-            try:
-                return round((weight - tara) / ind_weight, 1)
-            except ZeroDivisionError:
-                return 0
+
+def calc_amount(
+        tipo: str,
+        weight: float,
+        ind_weight: float,
+        tara: int,
+        use_pkg=True) -> int:
+    if not use_pkg:
+        tara = 0
+    if tipo.lower() == "sello":
+        return round((weight * 1000) / ind_weight, 1)
+    else:
+        try:
+            return round((weight - tara) / ind_weight, 1)
+        except ZeroDivisionError:
+            return 0
 
 
-def get_machines(area:str, sub_area:str, database:dict)->list:
+def get_machines(area: str, sub_area: str, database: dict) -> list:
     con = mariadb.connect(**database)
     cur = con.cursor()
     cur.execute('''
         SELECT * FROM maquinas
         where area = %s and sub_area = %s ;
         ''', (area, sub_area)
-                )
+    )
     res = cur.fetchall()
     cur.close()
     return res
 
-def capture_value(item:list, equipo:str, sub_area:str,database:dict):
+
+def capture_value(item: list, equipo: str, sub_area: str, database: dict):
     # print(item)
     con = mariadb.connect(**database)
     cur = con.cursor()
@@ -70,11 +77,12 @@ def capture_value(item:list, equipo:str, sub_area:str,database:dict):
         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
     );
     ''', (item[0], item[1], item[2], item[3], item[5],
-          item[8], item[4], equipo, item[6], sub_area, 
+          item[8], item[4], equipo, item[6], sub_area,
           item[7]))
     con.commit()
     # print('this should commit')
     cur.close()
+
 
 def read_weight(puerto):
     ser = serial.Serial(
@@ -89,7 +97,8 @@ def read_weight(puerto):
     weight = ser.read(8).decode('ascii').strip()
     return weight
 
-def search_mats(data:dict, query:str)-> list:
+
+def search_mats(data: dict, query: str) -> list:
     query = query.upper()
     q = query.find('Q')
     res = []
@@ -103,7 +112,8 @@ def search_mats(data:dict, query:str)-> list:
                 res.append(i)
     return res
 
-def get_materiales(database:dict)-> list:
+
+def get_materiales(database: dict) -> list:
     con = mariadb.connect(**database)
     cur = con.cursor()
     cur.execute('SELECT * FROM materiales;')
@@ -115,7 +125,8 @@ def get_materiales(database:dict)-> list:
         i[0] = f'{i[1]} {i[2]} {i[3]}'
     return res
 
-def get_materiales_cables(database:dict)-> list:
+
+def get_materiales_cables(database: dict) -> list:
     con = mariadb.connect(**database)
     cur = con.cursor()
     cur.execute("SELECT * FROM materiales where tipo = 'CABLE';")
@@ -125,6 +136,13 @@ def get_materiales_cables(database:dict)-> list:
     for i in res:
         i[0] = f'{i[1]} {i[2]} {i[3]}'
     return res
+
+
+def check_master(equipo):
+    if equipo == 'Master':
+        return True
+    else:
+        return False
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ import setup as db
 
 class Controller:
     def __init__(self):
-        self.path = '/'.join(os.getcwd().split('\\'))
+        self.path = "/".join(os.getcwd().split("\\"))
         self.database = db.db
         self.window = None
         self.login = None
@@ -19,16 +19,19 @@ class Controller:
 
     def show_login(self):
         self.login = LoginUi.Login(self.path, self.database)
-        self.login.setStyleSheet('''
+        self.login.setStyleSheet(
+            """
             background: black;
-                 ''')
+                 """
+        )
         self.login.switch_window.connect(self.show_main)
         self.login.switch_window_user.connect(self.show_user)
         self.login.show()
 
     def show_main(self, name, area, sub_area, equipo, port):
         self.window = InventoryUi.Inventory(
-            name, area, sub_area, equipo, port, self.path, self.database)
+            name, area, sub_area, equipo, port, self.path, self.database
+        )
         self.login.close()
         self.window.show()
         self.window.showFullScreen()
@@ -41,11 +44,11 @@ class Controller:
 
 def main():
     app = QApplication(sys.argv)
-    app.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
+    app.setStyle(QtWidgets.QStyleFactory.create("Fusion"))
     controller = Controller()
     controller.show_login()
     sys.exit(app.exec_())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

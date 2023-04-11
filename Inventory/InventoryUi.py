@@ -2,7 +2,22 @@ import sys
 from datetime import date
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont, QPixmap
-from PyQt5.QtWidgets import *
+# from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import (
+    QFrame,
+    QGridLayout,
+    QSizePolicy,
+    QLabel,
+    QLineEdit,
+    QTableWidget,
+    QRadioButton,
+    QPushButton,
+    QCheckBox,
+    QComboBox,
+    QSpacerItem,
+    QMessageBox,
+    QApplication,
+)
 
 try:
     from . import functions as fn
@@ -32,7 +47,7 @@ class Inventory(QFrame):
 
         self.setStyleSheet(cn.theme)
 
-        if cable.lower() != 'cable':
+        if cable.lower() != "cable":
             for i in fn.get_materiales(self.database):
                 self.materials[i[2]] = i
         else:
@@ -49,11 +64,11 @@ class Inventory(QFrame):
         self.setLayout(main_grid)
 
         self.frame_1 = QFrame()
-        self.frame_1.setSizePolicy(QSizePolicy.Expanding,
-                                   QSizePolicy.Expanding)
+        self.frame_1.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.frame_2 = QFrame()
-        self.frame_2.setSizePolicy(QSizePolicy.Expanding,
-                                   QSizePolicy.Expanding)
+        self.frame_2.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         main_grid.addWidget(self.frame_1, 0, 0)
         main_grid.addWidget(self.frame_2, 0, 1)
@@ -69,7 +84,7 @@ class Inventory(QFrame):
         grid_2.setRowMinimumHeight(2, 20)
         grid_2.setRowMinimumHeight(7, 20)
 
-        #########################################################################################################
+        ######################################################################
 
         # Frame 1
         self.frame_1.setLayout(grid_1)
@@ -93,22 +108,24 @@ class Inventory(QFrame):
 
         # Frame 1 Items
         self.line_1 = QLineEdit()
-        self.line_1.setFont(QFont('Consolas', 14))
+        self.line_1.setFont(QFont("Consolas", 14))
         self.line_1.setStyleSheet(cn.line_theme)
 
         self.line_2 = QLineEdit()
-        self.line_2.setFont(QFont('Consolas', 14))
+        self.line_2.setFont(QFont("Consolas", 14))
         self.line_2.setMaximumWidth(150)
         self.line_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.line_2.setStyleSheet('''
+        self.line_2.setStyleSheet(
+            """
                                   padding-top: 6px;
                                   padding-bottom: 6px;
-                                  ''')
+                                  """
+        )
         self.table_1 = QTableWidget()
         self.table_1.setStyleSheet(cn.theme)
         self.table_1.setColumnCount(3)
         self.table_1.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
-        self.table_1.setHorizontalHeaderLabels(['Yura', 'Tipo', 'Provedor'])
+        self.table_1.setHorizontalHeaderLabels(["Yura", "Tipo", "Provedor"])
         self.table_1.setColumnWidth(0, 100)
         self.table_1.setColumnWidth(1, 60)
         self.table_1.setColumnWidth(2, 120)
@@ -116,122 +133,126 @@ class Inventory(QFrame):
             QtWidgets.QAbstractItemView.NoEditTriggers)
         # self.table_1.verticalHeader().setMinimumWidth(30)
         # self.table_1.verticalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
-        self.table_1.setFont(QFont('Consolas', 8))
+        self.table_1.setFont(QFont("Consolas", 8))
         self.table_1.verticalHeader().setVisible(False)
 
         self.label_main = QLabel()
-        self.label_main.setText(f'Inventario Mensual: {self.name}')
-        mainfont = QFont('Consolas', 16)
+        self.label_main.setText(f"Inventario Mensual: {self.name}")
+        mainfont = QFont("Consolas", 16)
         mainfont.setBold(True)
         self.label_main.setFont(mainfont)
         self.label_main.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_main.setStyleSheet('''
+        self.label_main.setStyleSheet(
+            """
             background-color: white;
             border: 1px solid #000;
             border-radius: 2px;
-            ''')
-        labelfont = QFont(QFont('Consolas', 17))
+            """
+        )
+        labelfont = QFont(QFont("Consolas", 17))
         labelfont.setBold(True)
 
         self.label_1_1 = QLabel()
-        self.label_1_1.setText('Provedor')
+        self.label_1_1.setText("Provedor")
         self.label_1_1.setFont(QFont(labelfont))
         self.label_1_1.setAlignment(QtCore.Qt.AlignCenter)
         self.label_1_1.setStyleSheet(cn.mat_label_theme)
 
         self.label_1_2 = QLabel()
-        self.label_1_2.setText('Yura')
+        self.label_1_2.setText("Yura")
         self.label_1_2.setFont(QFont(labelfont))
         self.label_1_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_1_2.setStyleSheet(cn.mat_label_theme)
 
         self.label_1_3 = QLabel()
-        self.label_1_3.setText('Tipo')
+        self.label_1_3.setText("Tipo")
         self.label_1_3.setFont(QFont(labelfont))
         self.label_1_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_1_3.setStyleSheet(cn.mat_label_theme)
 
         self.label_1_4 = QLabel()
-        self.label_1_4.setText('Pkg')
+        self.label_1_4.setText("Pkg")
         self.label_1_4.setFont(QFont(labelfont))
         self.label_1_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_1_4.setStyleSheet(cn.mat_label_theme)
 
         self.label_amount = QLabel()
-        self.label_amount.setText('')
+        self.label_amount.setText("")
         self.label_amount.setMaximumWidth(150)
-        self.label_amount.setFont(QFont('Consolas', 14))
+        self.label_amount.setFont(QFont("Consolas", 14))
         self.label_amount.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_amount.setStyleSheet('''
+        self.label_amount.setStyleSheet(
+            """
             background-color: #fff;
             border-bottom: 2px solid #000;
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
-            ''')
-        radiofont = QFont('Consolas', 10)
+            """
+        )
+        radiofont = QFont("Consolas", 10)
         radiofont.setBold(True)
 
         self.radio1 = QRadioButton()
         self.radio1.setFont(QFont(radiofont))
-        self.radio1.setText('Peso')
+        self.radio1.setText("Peso")
         self.radio1.setStyleSheet(cn.theme)
         self.radio2 = QRadioButton()
         self.radio2.setFont(QFont(radiofont))
-        self.radio2.setText('Nuevo')
+        self.radio2.setText("Nuevo")
         self.radio2.setStyleSheet(cn.theme)
         self.radio3 = QRadioButton()
         self.radio3.setFont(QFont(radiofont))
-        self.radio3.setText('Cantidad')
+        self.radio3.setText("Cantidad")
         self.radio3.setStyleSheet(cn.theme)
 
-        self.button_1 = QPushButton('Pesar')
-        self.button_1.setFont(QFont('Consolas', 14))
+        self.button_1 = QPushButton("Pesar")
+        self.button_1.setFont(QFont("Consolas", 14))
         self.button_1.setStyleSheet(cn.theme)
 
         self.box_1 = QCheckBox()
         self.box_1.setFont(QFont(radiofont))
-        self.box_1.setText('Tara')
+        self.box_1.setText("Tara")
         self.box_1.setStyleSheet(cn.theme)
 
         self.combo = QComboBox()
         self.combo.setStyleSheet(cn.theme)
-        self.combo.setFont(QFont('Consolas', 16))
+        self.combo.setFont(QFont("Consolas", 16))
 
-        self.logo = QPixmap(f'{self.root_path}/src/logo-rojo-v2.png')
+        self.logo = QPixmap(f"{self.root_path}/src/logo-rojo-v2.png")
         self.label_img = QLabel()
-        self.label_img.setSizePolicy(QSizePolicy.Expanding,
-                                     QSizePolicy.Expanding)
-        self.label_img.setStyleSheet('border-width: 0px;')
-        self.label_img.setPixmap(self.logo.scaled(66, 66,
-                                                  QtCore.Qt.KeepAspectRatio))
+        self.label_img.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.label_img.setStyleSheet("border-width: 0px;")
+        self.label_img.setPixmap(self.logo.scaled(
+            66, 66, QtCore.Qt.KeepAspectRatio))
         self.label_img.setMaximumSize(100, 40)
 
-        font2 = QFont(QFont('Consolas', 12))
+        font2 = QFont(QFont("Consolas", 12))
         font2.setBold(True)
 
-        self.codigo_yura = QLabel('Codigo Yura')
+        self.codigo_yura = QLabel("Codigo Yura")
         self.codigo_yura.setFont(font2)
         self.codigo_yura.setAlignment(
             QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
-        self.codigo_yura.setStyleSheet('padding-bottom: 0px;')
+        self.codigo_yura.setStyleSheet("padding-bottom: 0px;")
 
-        self.codigo_proveedor = QLabel('Codigo Proveedor')
+        self.codigo_proveedor = QLabel("Codigo Proveedor")
         self.codigo_proveedor.setFont(font2)
         self.codigo_proveedor.setAlignment(
             QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
-        self.codigo_proveedor.setStyleSheet('padding-bottom: 0px;')
+        self.codigo_proveedor.setStyleSheet("padding-bottom: 0px;")
 
-        self.tipo = QLabel('Tipo')
+        self.tipo = QLabel("Tipo")
         self.tipo.setFont(font2)
         self.tipo.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
-        self.tipo.setStyleSheet('padding-bottom: 0px;')
+        self.tipo.setStyleSheet("padding-bottom: 0px;")
 
-        self.packing = QLabel('Packing')
+        self.packing = QLabel("Packing")
         self.packing.setFont(font2)
         self.packing.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
-        self.packing.setStyleSheet('padding-bottom: 0px;')
+        self.packing.setStyleSheet("padding-bottom: 0px;")
 
-        self.status = QLabel('Bascula Conectada')
+        self.status = QLabel("Bascula Conectada")
         self.status.setFont(font2)
         self.status.setAlignment(QtCore.Qt.AlignCenter)
 
@@ -300,47 +321,60 @@ class Inventory(QFrame):
         self.scale_message = QMessageBox()
 
         self.error = QMessageBox()
-        self.error.setWindowTitle('Error')
-        self.error.setText('Cantidad No Valida')
+        self.error.setWindowTitle("Error")
+        self.error.setText("Cantidad No Valida")
         self.error.setInformativeText(
             "La cantidad no debe ser menor o igual a '0'.")
         self.error.setIcon(QMessageBox.Critical)
 
         self.con_error = QMessageBox()
-        self.con_error.setWindowTitle('Error')
-        self.con_error.setText('La Bascula se a Desconectado')
+        self.con_error.setWindowTitle("Error")
+        self.con_error.setText("La Bascula se a Desconectado")
         self.con_error.setInformativeText(
-            "Verifica que la bascula este connectada correctamente.")
+            "Verifica que la bascula este connectada correctamente."
+        )
         self.con_error.setIcon(QMessageBox.Critical)
 
-        ##########################################################################################################
+        #######################################################################
 
         # Frame 2 Items
         self.frame_2.setLayout(grid_2)
-        self.frame_2.setStyleSheet('''
+        self.frame_2.setStyleSheet(
+            """
             background: White;
             border-style: solid;
             border-color: black;
             border-width: 1px;
-            ''')
+            """
+        )
 
         self.label_2_1 = QLabel()
-        self.label_2_1.setText('Historial de Inventario')
-        self.label_2_1.setFont(QFont('Consolas', 14))
+        self.label_2_1.setText("Historial de Inventario")
+        self.label_2_1.setFont(QFont("Consolas", 14))
         self.label_2_1.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2_1.setStyleSheet('''
-                                background-color: white;
-                                border: 0px solid white;
-                                ''')
+        self.label_2_1.setStyleSheet(
+            """
+            background-color: white;
+            border: 0px solid white;
+            """
+        )
 
         self.table_2 = QTableWidget()
         self.table_2.setStyleSheet(cn.theme)
-        self.table_2.setSizePolicy(QSizePolicy.Expanding,
-                                   QSizePolicy.Expanding)
+        self.table_2.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.table_2.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
         self.table_2.setColumnCount(7)
-        self.table_2.setHorizontalHeaderLabels(['Yura', 'Proveedor', 'Cantidad',
-                                                'Peso', 'Maquina', 'Area', 'Fecha'])
+        table2_headers = [
+            "Yura",
+            "Proveedor",
+            "Cantidad",
+            "Peso",
+            "Maquina",
+            "Area",
+            "Fecha",
+        ]
+        self.table_2.setHorizontalHeaderLabels(table2_headers)
         self.table_2.setColumnWidth(0, 100)
         self.table_2.setColumnWidth(1, 120)
         self.table_2.setColumnWidth(2, 80)
@@ -350,24 +384,27 @@ class Inventory(QFrame):
         self.table_2.setColumnWidth(6, 100)
         self.table_2.setEditTriggers(
             QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.table_2.setFont(QFont('Consolas', 9))
+        self.table_2.setFont(QFont("Consolas", 9))
 
         # Add Items to Frame 2
         grid_2.addWidget(self.label_2_1, 1, 2)
         grid_2.addWidget(self.table_2, 3, 1, 4, 3)
 
-        ###############################################################################################################
+        #######################################################################
 
         # Set Default States
         self.radio1.setChecked(True)
         self.box_1.setChecked(True)
 
-        if cable.lower() == 'cable':
+        self.box_1.setEnabled(fn.check_master(self.equipo))
+
+        if cable.lower() == "cable":
             self.radio2.setEnabled(False)
             self.radio3.setEnabled(False)
 
-        ###############################################################################################################
+        #######################################################################
 
+        print(self.equipo)
         # Function Connections
         self.line_1.returnPressed.connect(self.search)
         self.table_1.itemSelectionChanged.connect(self.table_update_label)
@@ -379,7 +416,7 @@ class Inventory(QFrame):
         self.line_2.returnPressed.connect(self.save_record)
         self.button_1.clicked.connect(self.get_weight)
 
-        ################################################################################################################
+        #######################################################################
 
         # Autorun Functions
         self.maquinas = fn.get_machines(
@@ -389,41 +426,43 @@ class Inventory(QFrame):
         for i in self.maquinas:
             self.combo.addItem(i[0])
 
-        if self.port == '0':
-            self.status.setText('Bascula Desconectada')
-            self.status.setStyleSheet('color: red;')
+        if self.port == "0":
+            self.status.setText("Bascula Desconectada")
+            self.status.setStyleSheet("color: red;")
 
         self.search()
 
-    ################################################################################################################
+    ###########################################################################
 
     # Declare Functions
     def scale_status_err(self):
-        self.status.setStyleSheet('color: red;')
-        self.status.setText('Bascula Desconectada')
-        self.scale_message.setWindowTitle('Error')
+        self.status.setStyleSheet("color: red;")
+        self.status.setText("Bascula Desconectada")
+        self.scale_message.setWindowTitle("Error")
         self.scale_message.setIcon(QMessageBox.Critical)
-        self.scale_message.setText('La Bascula Se A Desconectado.')
+        self.scale_message.setText("La Bascula Se A Desconectado.")
         self.scale_message.exec_()
 
     def scale_status_ok(self):
-        self.status.setStyleSheet('color: black;')
-        self.status.setText('Bascula Conectada')
-        self.scale_message.setWindowTitle('Advertencia')
+        self.status.setStyleSheet("color: black;")
+        self.status.setText("Bascula Conectada")
+        self.scale_message.setWindowTitle("Advertencia")
         self.scale_message.setIcon(QMessageBox.Information)
-        self.scale_message.setText('La Bascula Se A Conectado.')
+        self.scale_message.setText("La Bascula Se A Conectado.")
         self.scale_message.exec_()
 
     def pkg_warning(self):
         if self.radio2.isChecked():
             self.warning = QMessageBox()
-            self.warning.setWindowTitle('Advertencia')
+            self.warning.setWindowTitle("Advertencia")
             self.warning.setIcon(QMessageBox.Information)
             self.warning.setText(
-                'Verifica El Valor del Pkg Antes de Continuar.')
+                "Verifica El Valor del Pkg Antes de Continuar.")
             self.warning.setInformativeText(
-                'Si el valor del pkg no coincide con la cantidad especificada en la etiqueta del articulo debera '
-                'introducir la cantidad del mismo como "cantidad".')
+                "Si el valor del pkg no coincide con la cantidad especificada"
+                "en la etiqueta del articulo debera introducir la cantidad del"
+                'mismo como "cantidad".'
+            )
             self.warning.exec_()
 
     def search(self):
@@ -463,10 +502,10 @@ class Inventory(QFrame):
         # print("No Match Found")
 
         if len(self.current_sel) == 9:
-            self.label_1_1.setText(f'{self.current_sel[2]}')
-            self.label_1_2.setText(f'{self.current_sel[3]}')
-            self.label_1_3.setText(f'{str(self.current_sel[4])}')
-            self.label_1_4.setText(f'{str(self.current_sel[7])}')
+            self.label_1_1.setText(f"{self.current_sel[2]}")
+            self.label_1_2.setText(f"{self.current_sel[3]}")
+            self.label_1_3.setText(f"{str(self.current_sel[4])}")
+            self.label_1_4.setText(f"{str(self.current_sel[7])}")
         self.line_1.setText("")
         self.line_2.setText("")
         self.label_amount.setText("0")
@@ -479,11 +518,26 @@ class Inventory(QFrame):
         if not weight:
             return
         simbols = [
-            '/', '*', '-', '+', "'", ',', '/', '?', '"', '[', ']', '\\', '=', '-', '`', ';'
+            "/",
+            "*",
+            "-",
+            "+",
+            "'",
+            ",",
+            "/",
+            "?",
+            '"',
+            "[",
+            "]",
+            "\\",
+            "=",
+            "-",
+            "`",
+            ";",
         ]
         if len(weight) == 1 and not weight.isnumeric():
             self.line_2.setText("")
-        elif weight.count('.') > 1:
+        elif weight.count(".") > 1:
             self.line_2.setText(weight[:-1])
         elif weight[-1].isalpha():
             self.line_2.setText(weight[:-1])
@@ -505,8 +559,10 @@ class Inventory(QFrame):
                     tara = self.current_sel[8]
                 peso_ind = self.current_sel[5]
                 resultado = round(
-                    fn.calc_amount(tipo=tipo, weight=peso,
-                                   ind_weight=peso_ind, tara=tara), 0
+                    fn.calc_amount(
+                        tipo=tipo, weight=peso, ind_weight=peso_ind, tara=tara
+                    ),
+                    0,
                 )
                 self.label_amount.setText(str(resultado))
             elif self.radio2.isChecked():
@@ -517,24 +573,32 @@ class Inventory(QFrame):
     def save_record(self):
         # try:
         if float(self.label_amount.text()) > 0:
-            value = ''
+            value = ""
             if self.radio1.isChecked():
-                value = 'Peso'
+                value = "Peso"
             if self.radio2.isChecked():
-                value = 'Nuevo'
+                value = "Nuevo"
             if self.radio3.isChecked():
-                value = 'Cantidad'
-
+                value = "Cantidad"
             # provedor, yura, tipo, cantidad, peso,  area, maquina, fecha
             # print(self.current_sel)
-            ob = [self.current_sel[3], self.current_sel[2], self.current_sel[4],
-                  self.label_amount.text(), self.combo.currentText(),
-                  self.line_2.text(), self.name, date.today().strftime("%Y-%m-%d"),
-                  value]
-            if float(self.line_2.text()) < cn.weight_limit[self.current_sel[4]] or value != 'Peso':
+            limit = cn.weight_limit[self.current_sel[4]]
+            ob = [
+                self.current_sel[3],
+                self.current_sel[2],
+                self.current_sel[4],
+                self.label_amount.text(),
+                self.combo.currentText(),
+                self.line_2.text(),
+                self.name,
+                date.today().strftime("%Y-%m-%d"),
+                value,
+            ]
+            if float(self.line_2.text()) < limit or value != "Peso":
                 self.history.append(ob)
-                fn.capture_value(ob, self.equipo, self.sub_area.split()[
-                                 0], self.database)
+                fn.capture_value(
+                    ob, self.equipo, self.sub_area.split()[0], self.database
+                )
                 self.display_history()
                 self.line_1.setText("")
                 self.line_2.setText("")
@@ -542,10 +606,11 @@ class Inventory(QFrame):
                 self.line_1.setFocus()
             else:
                 self.high_weight = QMessageBox()
-                self.high_weight.setWindowTitle('Error de Peso')
-                self.high_weight.setText('Peso Demaciado Alto.')
+                self.high_weight.setWindowTitle("Error de Peso")
+                self.high_weight.setText("Peso Demaciado Alto.")
                 self.high_weight.setInformativeText(
-                    'Verifica el estado de la bascula y del material.')
+                    "Verifica el estado de la bascula y del material."
+                )
                 self.high_weight.setIcon(QMessageBox.Critical)
                 self.high_weight.exec_()
         else:
@@ -559,8 +624,8 @@ class Inventory(QFrame):
             # Yura
             self.table_2.setItem(
                 tablerow, 0, QtWidgets.QTableWidgetItem(row[1]))
-            self.table_2.item(
-                tablerow, 0).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_2.item(tablerow, 0).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             # Proveedor
             self.table_2.setItem(
                 tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
@@ -598,22 +663,22 @@ class Inventory(QFrame):
         self.table_2.setVerticalHeaderLabels(row_labels)
 
     def get_weight(self):
-        if self.port == '0':
-            port = [fn.set_port() if fn.set_port() else '0']
-            if port[0] != '0':
+        if self.port == "0":
+            port = [fn.set_port() if fn.set_port() else "0"]
+            if port[0] != "0":
                 self.port = port[0]
                 self.scale_status_ok()
 
-        if self.port == '0':
-            weight = '0'
+        if self.port == "0":
+            weight = "0"
         else:
             try:
                 weight = fn.read_weight(self.port)
             except FileNotFoundError:
-                self.port = '0'
+                self.port = "0"
                 self.scale_status_err()
-                weight = '0'
-        self.line_2.setText('')
+                weight = "0"
+        self.line_2.setText("")
         self.line_2.setText(weight)
         self.line_2.setFocus()
 
@@ -624,14 +689,14 @@ def main():
         "database": "yura_elaboracion",
         "user": "yura_admin",
         "password": "Metallica24+",
-        "port": 3306
+        "port": 3306,
     }
-    path = 'C:/Users/YR PROD ORDER/Documents/Python/YSio - MariaDB'
+    path = "C:/Users/YR PROD ORDER/Documents/Python/YSio - MariaDB"
     app = QApplication(sys.argv)
-    window = Inventory('Corte M1', 'M1', 'corte', 'Master', '0', path, db)
+    window = Inventory("Corte M1", "M1", "corte", "Master", "0", path, db)
     window.showMaximized()
     sys.exit(app.exec_())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
