@@ -2,23 +2,11 @@ import sys
 from datetime import date
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont, QPixmap
-# from PyQt5.QtWidgets import *
 from PyQt5.QtWidgets import (
-    QFrame,
-    QGridLayout,
-    QSizePolicy,
-    QLabel,
-    QLineEdit,
-    QTableWidget,
-    QRadioButton,
-    QPushButton,
-    QCheckBox,
-    QComboBox,
-    QSpacerItem,
-    QMessageBox,
-    QApplication,
+    QFrame, QGridLayout, QSizePolicy, QLabel, QLineEdit, QTableWidget,
+    QRadioButton, QPushButton, QCheckBox, QComboBox, QSpacerItem,
+    QMessageBox, QApplication,
 )
-
 try:
     from . import functions as fn
     from . import constants as cn
@@ -56,6 +44,8 @@ class Inventory(QFrame):
 
         self.current_sel = []
         self.history = []
+        self.code = None
+        self.master = fn.check_master(self.equipo)
 
         # self.setStyleSheet('background-color: black;')
 
@@ -117,9 +107,9 @@ class Inventory(QFrame):
         self.line_2.setAlignment(QtCore.Qt.AlignCenter)
         self.line_2.setStyleSheet(
             """
-                                  padding-top: 6px;
-                                  padding-bottom: 6px;
-                                  """
+            padding-top: 6px;
+            padding-bottom: 6px;
+            """
         )
         self.table_1 = QTableWidget()
         self.table_1.setStyleSheet(cn.theme)
@@ -217,6 +207,8 @@ class Inventory(QFrame):
         self.combo = QComboBox()
         self.combo.setStyleSheet(cn.theme)
         self.combo.setFont(QFont("Consolas", 16))
+        self.combo.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         self.logo = QPixmap(f"{self.root_path}/src/logo-rojo-v2.png")
         self.label_img = QLabel()
@@ -270,7 +262,7 @@ class Inventory(QFrame):
         grid_1.addWidget(self.label_img, 1, 7, QtCore.Qt.AlignRight)
 
         grid_1.addWidget(self.line_1, 3, 1, 1, 3)
-        grid_1.addWidget(self.combo, 3, 7, QtCore.Qt.AlignRight)
+        grid_1.addWidget(self.combo, 3, 6, 1, 2, QtCore.Qt.AlignRight)
 
         grid_1.addWidget(self.codigo_yura, 4, 5)
 
@@ -365,16 +357,7 @@ class Inventory(QFrame):
             QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.table_2.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
         self.table_2.setColumnCount(7)
-        table2_headers = [
-            "Yura",
-            "Proveedor",
-            "Cantidad",
-            "Peso",
-            "Maquina",
-            "Area",
-            "Fecha",
-        ]
-        self.table_2.setHorizontalHeaderLabels(table2_headers)
+        self.table_2.setHorizontalHeaderLabels(cn.table2_headers)
         self.table_2.setColumnWidth(0, 100)
         self.table_2.setColumnWidth(1, 120)
         self.table_2.setColumnWidth(2, 80)
@@ -396,15 +379,18 @@ class Inventory(QFrame):
         self.radio1.setChecked(True)
         self.box_1.setChecked(True)
 
-        self.box_1.setEnabled(fn.check_master(self.equipo))
+        self.box_1.setEnabled(self.master)
 
-        if cable.lower() == "cable":
-            self.radio2.setEnabled(False)
-            self.radio3.setEnabled(False)
+        # if cable.lower() == "cable":
+        #     self.radio2.setEnabled(False)
+        #     self.radio3.setEnabled(False)
+
+        self.radio2.setEnabled(not fn.check_cable(cable))
+        self.radio3.setEnabled(not fn.check_cable(cable))
 
         #######################################################################
 
-        print(self.equipo)
+        # print(self.equipo)
         # Function Connections
         self.line_1.returnPressed.connect(self.search)
         self.table_1.itemSelectionChanged.connect(self.table_update_label)
@@ -421,10 +407,10 @@ class Inventory(QFrame):
         # Autorun Functions
         self.maquinas = fn.get_machines(
             self.area, self.sub_area, self.database)
-        # if cable.lower() != 'cable':
-        #     self.combo.addItem("")
+        if not fn.check_cable(cable):
+            self.combo.addItem("")
         for i in self.maquinas:
-            self.combo.addItem(i[0])
+            self.combo.addItem(f" {i[0]}  ")
 
         if self.port == "0":
             self.status.setText("Bascula Desconectada")
@@ -466,8 +452,8 @@ class Inventory(QFrame):
             self.warning.exec_()
 
     def search(self):
-        query = self.line_1.text().strip()
-        res = fn.search_mats(self.materials, query)
+        self.code = self.line_1.text().strip()
+        res = fn.search_mats(self.materials, self.code)
 
         self.table_1.setRowCount(len(res))
         tablerow = 0
@@ -514,34 +500,17 @@ class Inventory(QFrame):
             self.label_amount.setText(str(self.current_sel[7]))
 
     def get_amount(self):
+        '''Calculate the amount.'''
         weight = self.line_2.text().strip()
         if not weight:
             return
-        simbols = [
-            "/",
-            "*",
-            "-",
-            "+",
-            "'",
-            ",",
-            "/",
-            "?",
-            '"',
-            "[",
-            "]",
-            "\\",
-            "=",
-            "-",
-            "`",
-            ";",
-        ]
         if len(weight) == 1 and not weight.isnumeric():
             self.line_2.setText("")
         elif weight.count(".") > 1:
             self.line_2.setText(weight[:-1])
         elif weight[-1].isalpha():
             self.line_2.setText(weight[:-1])
-        elif weight[-1] in simbols:
+        elif weight[-1] in cn.simbols:
             self.line_2.setText(weight[:-1])
         else:
             if self.radio1.isChecked():
@@ -571,50 +540,63 @@ class Inventory(QFrame):
                 self.label_amount.setText(self.line_2.text())
 
     def save_record(self):
-        # try:
-        if float(self.label_amount.text()) > 0:
-            value = ""
-            if self.radio1.isChecked():
-                value = "Peso"
-            if self.radio2.isChecked():
-                value = "Nuevo"
-            if self.radio3.isChecked():
-                value = "Cantidad"
-            # provedor, yura, tipo, cantidad, peso,  area, maquina, fecha
-            # print(self.current_sel)
-            limit = cn.weight_limit[self.current_sel[4]]
-            ob = [
-                self.current_sel[3],
-                self.current_sel[2],
-                self.current_sel[4],
-                self.label_amount.text(),
-                self.combo.currentText(),
-                self.line_2.text(),
-                self.name,
-                date.today().strftime("%Y-%m-%d"),
-                value,
-            ]
-            if float(self.line_2.text()) < limit or value != "Peso":
-                self.history.append(ob)
-                fn.capture_value(
-                    ob, self.equipo, self.sub_area.split()[0], self.database
-                )
-                self.display_history()
-                self.line_1.setText("")
-                self.line_2.setText("")
-                self.label_amount.setText("0")
-                self.line_1.setFocus()
+        maquina = self.combo.currentText().trim()
+        if maquina != "" or self.master:
+            if float(self.label_amount.text()) > 0:
+                value = ""
+                if self.radio1.isChecked():
+                    value = "Peso"
+                if self.radio2.isChecked():
+                    value = "Nuevo"
+                if self.radio3.isChecked():
+                    value = "Cantidad"
+                # provedor, yura, tipo, cantidad, peso,  area, maquina, fecha
+                # print(self.current_sel)
+                limit = cn.weight_limit[self.current_sel[4]]
+                ob = [
+                    self.current_sel[3],
+                    self.current_sel[2],
+                    self.current_sel[4],
+                    self.label_amount.text(),
+                    maquina,
+                    self.line_2.text(),
+                    self.name,
+                    date.today().strftime("%Y-%m-%d"),
+                    value,
+                    self.code
+                ]
+                if float(self.line_2.text()) < limit or value != "Peso":
+                    self.history.append(ob)
+                    fn.capture_value(
+                        ob, self.equipo, self.sub_area.split()[
+                            0], self.database
+                    )
+                    self.display_history()
+                    self.line_1.setText("")
+                    self.line_2.setText("")
+                    self.label_amount.setText("0")
+                    self.line_1.setFocus()
+                else:
+                    high_weight = QMessageBox()
+                    high_weight.setWindowTitle("Error de Peso")
+                    high_weight.setText("Peso Demaciado Alto.")
+                    high_weight.setInformativeText(
+                        "Verifica el estado de la bascula y del material."
+                    )
+                    high_weight.setIcon(QMessageBox.Critical)
+                    high_weight.exec_()
             else:
-                self.high_weight = QMessageBox()
-                self.high_weight.setWindowTitle("Error de Peso")
-                self.high_weight.setText("Peso Demaciado Alto.")
-                self.high_weight.setInformativeText(
-                    "Verifica el estado de la bascula y del material."
-                )
-                self.high_weight.setIcon(QMessageBox.Critical)
-                self.high_weight.exec_()
+                self.error.exec_()
         else:
-            self.error.exec_()
+            error_maquina = QMessageBox()
+            error_maquina.setWindowTitle("Error de Maquina.")
+            error_maquina.setText(
+                "No as seleccionado una 'Maquina'.")
+            error_maquina.setInformativeText(
+                "Debes seleccionar un numero de maquina para poder guardar el registro."
+            )
+            error_maquina.setIcon(QMessageBox.Critical)
+            error_maquina.exec_()
 
     def display_history(self):
         self.table_2.setRowCount(len(self.history))

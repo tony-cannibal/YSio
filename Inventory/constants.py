@@ -1,9 +1,11 @@
 
 
-areas = ['Corte M1', 'Medios M1', 'Corte M2', 'Medios M2', 'BATTERY', 'ENSAMBLE', 'Almacen', 'Cable M1', 'Cable M2']
+areas = ['Corte M1', 'Medios M1', 'Corte M2', 'Medios M2',
+         'BATTERY', 'ENSAMBLE', 'Almacen', 'Cable M1', 'Cable M2']
 
 
-simbols = ['/', '*', '-', '+', "'", ',' , '/', '?' , '"', '[', ']', '\\', '=', '-', '`', ';']
+simbols = ['/', '*', '-', '+', "'", ',', '/',
+           '?', '"', '[', ']', '\\', '=', '-', '`', ';']
 
 
 weight_limit = {
@@ -31,6 +33,21 @@ amount_limit = {
     'pret': 9999
 }
 
+table2_headers = [
+    "Yura",
+    "Proveedor",
+    "Cantidad",
+    "Peso",
+    "Maquina",
+    "Area",
+    "Fecha",
+]
+
+simbols = [
+    "/", "*", "-", "+", "'", ",", "/",
+    "?", '"', "[", "]", "\\", "=", "-",
+    "`", ";",
+]
 
 # Area Styles
 corte_m1 = 'QFrame { background: rgb(37, 186, 35);}'
@@ -137,8 +154,10 @@ theme = '''
         background-color: #fff;
         border: 1px solid black;
         border-radius: 0px;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 4px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        margin-left: 6px;
     }
 
     QComboBox QAbstractItemView {

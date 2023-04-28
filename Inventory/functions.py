@@ -71,14 +71,14 @@ def capture_value(item: list, equipo: str, sub_area: str, database: dict):
     cur.execute('''
     INSERT INTO inventario_mensual(
         proveedor, yura, tipo, cantidad, peso, valor, maquina,
-        equipo, area, sub_area, fecha
+        equipo, area, sub_area, fecha, codigo
         )
     VALUES(
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
     );
     ''', (item[0], item[1], item[2], item[3], item[5],
           item[8], item[4], equipo, item[6], sub_area,
-          item[7]))
+          item[7], item[9]))
     con.commit()
     # print('this should commit')
     cur.close()
@@ -140,6 +140,13 @@ def get_materiales_cables(database: dict) -> list:
 
 def check_master(equipo):
     if equipo == 'Master':
+        return True
+    else:
+        return False
+
+
+def check_cable(cable):
+    if cable.lower() == 'cable':
         return True
     else:
         return False
