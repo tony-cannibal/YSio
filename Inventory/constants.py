@@ -9,7 +9,8 @@ simbols = ['/', '*', '-', '+', "'", ',', '/',
 
 
 weight_limit = {
-    'cable': 400,
+    'cable': 90,
+    'cable batt': 400,
     'terminal': 15,
     'terminal batt': 30,
     'sello': 10,

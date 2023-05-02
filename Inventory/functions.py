@@ -71,16 +71,15 @@ def capture_value(item: list, equipo: str, sub_area: str, database: dict):
     cur.execute('''
     INSERT INTO inventario_mensual(
         proveedor, yura, tipo, cantidad, peso, valor, maquina,
-        equipo, area, sub_area, fecha, codigo
+        equipo, area, sub_area, codigo
         )
     VALUES(
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
     );
     ''', (item[0], item[1], item[2], item[3], item[5],
-          item[8], item[4], equipo, item[6], sub_area,
-          item[7], item[9]))
+          item[7], item[4], equipo, item[6], sub_area,
+          item[8]))
     con.commit()
-    # print('this should commit')
     cur.close()
 
 

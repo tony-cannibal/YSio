@@ -1,5 +1,5 @@
 import sys
-from datetime import date
+# from datetime import date
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import (
@@ -381,9 +381,8 @@ class Inventory(QFrame):
 
         self.box_1.setEnabled(self.master)
 
-        # if cable.lower() == "cable":
-        #     self.radio2.setEnabled(False)
-        #     self.radio3.setEnabled(False)
+        if self.equipo == "Service":
+            self.box_1.setEnabled(True)
 
         self.radio2.setEnabled(not fn.check_cable(cable))
         self.radio3.setEnabled(not fn.check_cable(cable))
@@ -502,45 +501,60 @@ class Inventory(QFrame):
     def get_amount(self):
         '''Calculate the amount.'''
         weight = self.line_2.text().strip()
+        # print(self.current_sel)
+
+        if self.radio2.isChecked():
+            print('This should happen')
+            self.label_amount.setText(str(self.current_sel[7]))
+            return
+
         if not weight:
             return
+
         if len(weight) == 1 and not weight.isnumeric():
             self.line_2.setText("")
-        elif weight.count(".") > 1:
+            return
+
+        if weight.count(".") > 1:
             self.line_2.setText(weight[:-1])
-        elif weight[-1].isalpha():
+            return
+
+        if weight[-1].isalpha():
             self.line_2.setText(weight[:-1])
-        elif weight[-1] in cn.simbols:
+            return
+
+        if weight[-1] in cn.simbols:
             self.line_2.setText(weight[:-1])
-        else:
-            if self.radio1.isChecked():
-                if len(self.current_sel) == 0:
-                    return 0
-                peso = weight
-                if peso == "":
-                    peso = 0
-                else:
-                    peso = float(peso)
-                tipo = self.current_sel[4]
-                if not self.box_1.isChecked():
-                    tara = 0
-                else:
-                    tara = self.current_sel[8]
-                peso_ind = self.current_sel[5]
-                resultado = round(
-                    fn.calc_amount(
-                        tipo=tipo, weight=peso, ind_weight=peso_ind, tara=tara
-                    ),
-                    0,
-                )
-                self.label_amount.setText(str(resultado))
-            elif self.radio2.isChecked():
-                self.label_amount.setText(str(self.current_sel[7]))
+            return
+
+        if self.radio1.isChecked():
+            if len(self.current_sel) == 0:
+                return 0
+            peso = weight
+            if peso == "":
+                peso = 0
             else:
-                self.label_amount.setText(self.line_2.text())
+                peso = float(peso)
+            tipo = self.current_sel[4]
+            if not self.box_1.isChecked():
+                tara = 0
+            else:
+                tara = self.current_sel[8]
+            peso_ind = self.current_sel[5]
+            resultado = round(
+                fn.calc_amount(
+                    tipo=tipo, weight=peso, ind_weight=peso_ind, tara=tara
+                ),
+                0,
+            )
+            self.label_amount.setText(str(resultado))
+            return
+
+        self.label_amount.setText(self.line_2.text())
 
     def save_record(self):
-        maquina = self.combo.currentText().trim()
+        maquina = self.combo.currentText().strip()
+        peso = "0" if self.line_2.text() == '' else self.line_2.text()
         if maquina != "" or self.master:
             if float(self.label_amount.text()) > 0:
                 value = ""
@@ -554,18 +568,19 @@ class Inventory(QFrame):
                 # print(self.current_sel)
                 limit = cn.weight_limit[self.current_sel[4]]
                 ob = [
-                    self.current_sel[3],
-                    self.current_sel[2],
-                    self.current_sel[4],
-                    self.label_amount.text(),
-                    maquina,
-                    self.line_2.text(),
-                    self.name,
-                    date.today().strftime("%Y-%m-%d"),
-                    value,
-                    self.code
+                    self.current_sel[3],  # Codigo de Proveedor
+                    self.current_sel[2],  # Codigo Yura
+                    self.current_sel[4],  # Tipo
+                    self.label_amount.text(),  # Cantidad
+                    maquina,  # Maquina
+                    peso,  # Peso
+                    self.name,  # Area
+                    # date.today().strftime("%Y-%m-%d"),  # Fecha
+                    value,  # Valor
+                    self.code  # Codigo
                 ]
-                if float(self.line_2.text()) < limit or value != "Peso":
+                # print(ob)
+                if float(peso) < limit or value != "Peso":
                     self.history.append(ob)
                     fn.capture_value(
                         ob, self.equipo, self.sub_area.split()[
@@ -585,6 +600,7 @@ class Inventory(QFrame):
                     )
                     high_weight.setIcon(QMessageBox.Critical)
                     high_weight.exec_()
+                    self.line_2.setText('')
             else:
                 self.error.exec_()
         else:

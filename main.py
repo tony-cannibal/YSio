@@ -11,7 +11,7 @@ import setup as db
 class Controller:
     def __init__(self):
         self.path = "/".join(os.getcwd().split("\\"))
-        self.database = db.database(False)
+        self.database = db.database(True)
         self.window = None
         self.login = None
         self.aduana = None
