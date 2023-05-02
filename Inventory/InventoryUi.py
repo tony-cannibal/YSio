@@ -46,6 +46,7 @@ class Inventory(QFrame):
         self.history = []
         self.code = None
         self.master = fn.check_master(self.equipo)
+        self.service = fn.check_service(self.equipo)
 
         # self.setStyleSheet('background-color: black;')
 
@@ -380,9 +381,7 @@ class Inventory(QFrame):
         self.box_1.setChecked(True)
 
         self.box_1.setEnabled(self.master)
-
-        if self.equipo == "Service":
-            self.box_1.setEnabled(True)
+        self.box_1.setEnabled(self.service)
 
         self.radio2.setEnabled(not fn.check_cable(cable))
         self.radio3.setEnabled(not fn.check_cable(cable))
@@ -504,7 +503,6 @@ class Inventory(QFrame):
         # print(self.current_sel)
 
         if self.radio2.isChecked():
-            print('This should happen')
             self.label_amount.setText(str(self.current_sel[7]))
             return
 
@@ -549,7 +547,6 @@ class Inventory(QFrame):
             )
             self.label_amount.setText(str(resultado))
             return
-
         self.label_amount.setText(self.line_2.text())
 
     def save_record(self):

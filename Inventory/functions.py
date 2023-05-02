@@ -144,6 +144,13 @@ def check_master(equipo):
         return False
 
 
+def check_service(equipo):
+    if equipo == 'Service':
+        return True
+    else:
+        return False
+
+
 def check_cable(cable):
     if cable.lower() == 'cable':
         return True
