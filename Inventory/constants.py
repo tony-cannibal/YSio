@@ -10,6 +10,7 @@ simbols = ['/', '*', '-', '+', "'", ',', '/',
 
 weight_limit = {
     'cable': 90,
+    'cable sam': 130,
     'cable batt': 400,
     'terminal': 15,
     'terminal batt': 30,
@@ -41,7 +42,7 @@ table2_headers = [
     "Peso",
     "Maquina",
     "Area",
-    "Fecha",
+    "Valor",
 ]
 
 simbols = [

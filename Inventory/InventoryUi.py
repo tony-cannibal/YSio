@@ -44,9 +44,10 @@ class Inventory(QFrame):
 
         self.current_sel = []
         self.history = []
-        self.code = None
+        self.code = []
         self.master = fn.check_master(self.equipo)
         self.service = fn.check_service(self.equipo)
+        self.manual = fn.manual_input(self.database, self.master)
 
         # self.setStyleSheet('background-color: black;')
 
@@ -101,6 +102,8 @@ class Inventory(QFrame):
         self.line_1 = QLineEdit()
         self.line_1.setFont(QFont("Consolas", 14))
         self.line_1.setStyleSheet(cn.line_theme)
+        if self.manual is False:
+            self.line_1.setEchoMode(QLineEdit.Password)
 
         self.line_2 = QLineEdit()
         self.line_2.setFont(QFont("Consolas", 14))
@@ -414,7 +417,7 @@ class Inventory(QFrame):
             self.status.setText("Bascula Desconectada")
             self.status.setStyleSheet("color: red;")
 
-        self.search()
+        # self.search()
 
     ###########################################################################
 
@@ -450,9 +453,23 @@ class Inventory(QFrame):
             self.warning.exec_()
 
     def search(self):
-        self.code = self.line_1.text().strip()
-        res = fn.search_mats(self.materials, self.code)
+        code = self.line_1.text().strip()
+        first_char = code[0] if code != '' else ''
+        length = len(code)
+        if self.manual is False and first_char != 'P' and length < 22:
+            codig_no_permitido = QMessageBox()
+            codig_no_permitido.setWindowTitle("Error de Codigo")
+            codig_no_permitido.setText("Codigo Manual No Permitido.")
+            codig_no_permitido.setInformativeText(
+                "Esta prohibido introducir codigos manualmente."
+            )
+            codig_no_permitido.setIcon(QMessageBox.Critical)
+            codig_no_permitido.exec_()
+            self.line_1.setText('')
+            return
 
+        self.code = fn.get_code_elements(self.line_1.text().strip())
+        res = fn.search_mats(self.materials, self.code[0])
         self.table_1.setRowCount(len(res))
         tablerow = 0
         for row in res:
@@ -484,11 +501,14 @@ class Inventory(QFrame):
             self.current_sel = list(self.materials[yura])
         # else:
         # print("No Match Found")
+        self.current_sel = fn.check_pkg(self.current_sel, self.code)
 
         if len(self.current_sel) == 9:
+            #
             self.label_1_1.setText(f"{self.current_sel[2]}")
             self.label_1_2.setText(f"{self.current_sel[3]}")
             self.label_1_3.setText(f"{str(self.current_sel[4])}")
+            # Packing
             self.label_1_4.setText(f"{str(self.current_sel[7])}")
         self.line_1.setText("")
         self.line_2.setText("")
@@ -499,6 +519,8 @@ class Inventory(QFrame):
 
     def get_amount(self):
         '''Calculate the amount.'''
+        if not self.current_sel:
+            return
         weight = self.line_2.text().strip()
         # print(self.current_sel)
 
@@ -574,7 +596,7 @@ class Inventory(QFrame):
                     self.name,  # Area
                     # date.today().strftime("%Y-%m-%d"),  # Fecha
                     value,  # Valor
-                    self.code  # Codigo
+                    self.code[0]  # Codigo
                 ]
                 # print(ob)
                 if float(peso) < limit or value != "Peso":
@@ -587,6 +609,9 @@ class Inventory(QFrame):
                     self.line_1.setText("")
                     self.line_2.setText("")
                     self.label_amount.setText("0")
+                    self.table_1.clearContents()
+                    self.table_1.setRowCount(0)
+                    self.radio1.setChecked(True)
                     self.line_1.setFocus()
                 else:
                     high_weight = QMessageBox()

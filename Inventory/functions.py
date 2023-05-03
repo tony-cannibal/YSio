@@ -128,7 +128,10 @@ def get_materiales(database: dict) -> list:
 def get_materiales_cables(database: dict) -> list:
     con = mariadb.connect(**database)
     cur = con.cursor()
-    cur.execute("SELECT * FROM materiales where tipo = 'CABLE';")
+    # cur.execute(
+    #     "SELECT * FROM materiales where tipo = 'CABLE';")
+    cur.execute(
+        "SELECT * FROM materiales where tipo = 'CABLE' OR tipo = 'CABLE SAM';")
     res = cur.fetchall()
     cur.close()
     res = [list(i) for i in res]
@@ -151,11 +154,65 @@ def check_service(equipo):
         return False
 
 
-def check_cable(cable):
+def check_cable(cable: str) -> bool:
     if cable.lower() == 'cable':
         return True
     else:
         return False
+
+
+def get_qty(code: str, qcount: int) -> str:
+    start = 0
+    end = 0
+    if qcount == 2:
+        start = code.rfind('Q') + 1
+    else:
+        start = code.find('Q') + 1
+    end = code.find('S', start)
+    return code[start:end]
+
+
+def get_subcode(code: str, qcount: int) -> str:
+    start = 1
+    end = 0
+    if qcount == 2:
+        end = code.rfind('Q')
+    else:
+        end = code.find('Q')
+    return code[start:end]
+
+
+def get_code_elements(code: str) -> list:
+    if len(code) >= 22:
+        qcount = code.count('Q')
+        qty = get_qty(code, qcount)
+        subcode = get_subcode(code, qcount)
+        elements = [code, subcode, qty]
+        return elements
+    else:
+        elements = [code, '', '']
+        return elements
+
+
+def check_pkg(current, code_elements):
+    if current[1] == code_elements[1]:
+        current[7] = code_elements[2]
+    return current
+
+
+def manual_input(database, master):
+    if master:
+        return True
+    else:
+        con = mariadb.connect(**database)
+        cur = con.cursor()
+        cur.execute("SELECT * FROM conditions WHERE state = 'manual input';")
+        res = cur.fetchall()
+        cur.close()
+        if res[0][2] == 1:
+            return True
+        else:
+            return False
 
 
 if __name__ == "__main__":

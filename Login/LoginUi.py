@@ -1,8 +1,12 @@
 import sys
 import os
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtGui import QFont, QPixmap, QIcon
+from PyQt5 import QtCore
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import (
+    QWidget, QVBoxLayout, QTabWidget, QFrame, QGridLayout, QLabel, QLineEdit,
+    QSizePolicy, QSpacerItem, QMessageBox
+)
 
 try:
     from . import constants as cn
@@ -10,7 +14,6 @@ try:
 except ImportError:
     import constants as cn
     import functions as fn
-
 
 
 class Login(QWidget):
@@ -22,7 +25,6 @@ class Login(QWidget):
         super().__init__()
         self.root_path = path
         self.database = database
-
 
         self.setWindowIcon(QIcon(f'{self.root_path}/src/SioV2.ico'))
         self.setWindowTitle('Login')
@@ -46,14 +48,13 @@ class Login(QWidget):
         self.tab1.setLayout(tab1_layout)
         self.tab1.setStyleSheet('background-color: #fff;')
 
-
         self.label_user = QLabel()
         self.label_user.setText('Num. de Reloj')
 
         self.label_password = QLabel()
         self.label_password.setText('Contraseña')
 
-        self.line_user =  QLineEdit()
+        self.line_user = QLineEdit()
         self.line_user.setAlignment(QtCore.Qt.AlignCenter)
 
         self.line_password = QLineEdit()
@@ -74,9 +75,12 @@ class Login(QWidget):
         tab1_layout.addWidget(self.label_password, 6, 2, 1, 2)
         tab1_layout.addWidget(self.line_password, 7, 2, 1, 2)
 
-        self.spacer1 = QSpacerItem(30, 30, QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.spacer_c = QSpacerItem(55, 30, QSizePolicy.Fixed, QSizePolicy.Expanding)
-        self.spacer_r = QSpacerItem(30, 50, QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.spacer1 = QSpacerItem(
+            30, 30, QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.spacer_c = QSpacerItem(
+            55, 30, QSizePolicy.Fixed, QSizePolicy.Expanding)
+        self.spacer_r = QSpacerItem(
+            30, 50, QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         tab1_layout.addItem(self.spacer_c, 0, 0)
         tab1_layout.addItem(self.spacer_r, 0, 1)
@@ -90,26 +94,23 @@ class Login(QWidget):
         tab1_layout.addItem(self.spacer_r, 8, 1)
 
 
-
 #########################################################################
 #########################################################################
 
         self.tab2 = QFrame()
         self.tab2.setObjectName("tab2")
-        
+
         tab2_layout = QGridLayout()
         self.tab2.setLayout(tab2_layout)
 
-        
         self.tab2.setStyleSheet(f'''
             QFrame {{
-                background-image: url({self.root_path}/src/blue.jpg); 
-                background-repeat: no-repeat; 
+                background-image: url({self.root_path}/src/blue.jpg);
+                background-repeat: no-repeat;
                 background-position: center;
             }}
 
         ''')
-
 
         self.inv_code = QLineEdit()
         self.inv_code.setAlignment(QtCore.Qt.AlignCenter)
@@ -146,10 +147,9 @@ class Login(QWidget):
 #########################################################################
 #########################################################################
 
-
         self.tab_widget.addTab(self.tab1, 'Usuario')
         self.tab_widget.addTab(self.tab2, 'Inventario')
-      
+
 
 #########################################################################
 #########################################################################
@@ -165,25 +165,23 @@ class Login(QWidget):
 
         self.noConection = QMessageBox()
         self.noConection.setWindowTitle('Error')
-        self.noConection.setText('No Se Pudo Establecer La Conexcion Con El Servidor!')
+        self.noConection.setText(
+            'No Se Pudo Establecer La Conexcion Con El Servidor!')
         self.noConection.setIcon(QMessageBox.Critical)
 
 
 #########################################################################
 #########################################################################
 
-
         self.inv_code.returnPressed.connect(self.login_inv)
         self.line_user.returnPressed.connect(self.sel_pass)
         self.line_password.returnPressed.connect(self.login_user)
-
 
 #########################################################################
 #########################################################################
 
     def sel_pass(self):
         self.line_password.setFocus()
-
 
     def login_inv(self):
         query = self.inv_code.text().strip()
@@ -204,7 +202,6 @@ class Login(QWidget):
             self.error.exec_()
             self.inv_code.setText('')
 
-
     def login_user(self):
         query = self.line_user.text().strip()
         passwd = self.line_password.text().strip()
@@ -224,7 +221,6 @@ class Login(QWidget):
             self.error.exec_()
             self.line_user.setText('')
 
-
     def login(self):
         query = self.line_1.text().strip()
         area = fn.get_inv_area(query, self.database)
@@ -242,7 +238,8 @@ class Login(QWidget):
             self.switch_window_aduana.emit(cn.aduana_areas[query][1])
         elif user and user != unconected:
             if query == str(user[0]):
-                self.switch_window_user.emit(user[0], user[1], user[2], user[3], user[4], user[5])
+                self.switch_window_user.emit(
+                    user[0], user[1], user[2], user[3], user[4], user[5])
         elif user == unconected or area == unconected:
             self.noConection.exec_()
             self.line_1.setText('')
@@ -250,8 +247,6 @@ class Login(QWidget):
         else:
             self.error.exec_()
             self.line_1.setText('')
-
-
 
 
 def main():
@@ -262,6 +257,7 @@ def main():
     window.show()
     sys.exit(app.exec_())
 
+
 if __name__ == '__main__':
-    
+
     main()
