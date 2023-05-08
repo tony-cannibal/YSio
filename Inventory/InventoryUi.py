@@ -440,7 +440,8 @@ class Inventory(QFrame):
         code = self.line_1.text().strip()
         first_char = code[0] if code != '' else ''
         length = len(code)
-        if self.manual is False and first_char != 'P' and length < 22:
+        if (self.manual is False and
+                first_char != 'P' and length < 20 and 'Q' not in code):
             codig_no_permitido = QMessageBox()
             codig_no_permitido.setWindowTitle("Error de Codigo")
             codig_no_permitido.setText("Codigo Manual No Permitido.")
