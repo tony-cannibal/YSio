@@ -176,12 +176,22 @@ class Login(QWidget):
         self.inv_code.returnPressed.connect(self.login_inv)
         self.line_user.returnPressed.connect(self.sel_pass)
         self.line_password.returnPressed.connect(self.login_user)
+        self.tab_widget.currentChanged.connect(self.set_cursor)
+
+        self.line_user.setFocus()
 
 #########################################################################
 #########################################################################
 
     def sel_pass(self):
         self.line_password.setFocus()
+
+    def set_cursor(self):
+        index = self.tab_widget.currentIndex()
+        if index == 0:
+            self.line_user.setFocus()
+        else:
+            self.inv_code.setFocus()
 
     def login_inv(self):
         query = self.inv_code.text().strip()

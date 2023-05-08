@@ -80,23 +80,7 @@ class Inventory(QFrame):
 
         # Frame 1
         self.frame_1.setLayout(grid_1)
-
-        if self.name == cn.areas[0] or self.name == cn.areas[7]:
-            self.frame_1.setStyleSheet(cn.corte_m1)
-        elif self.name == cn.areas[1]:
-            self.frame_1.setStyleSheet(cn.medios_m1)
-        elif self.name == cn.areas[2] or self.name == cn.areas[8]:
-            self.frame_1.setStyleSheet(cn.corte_m2)
-        elif self.name == cn.areas[3]:
-            self.frame_1.setStyleSheet(cn.medios_m2)
-        elif self.name == cn.areas[4]:
-            self.frame_1.setStyleSheet(cn.batt)
-        elif self.name == cn.areas[6]:
-            self.frame_1.setStyleSheet(cn.materiales)
-        elif self.name == cn.areas[5]:
-            self.frame_1.setStyleSheet(cn.ensamble)
-        else:
-            self.frame_1.setStyleSheet(cn.default)
+        self.frame_1.setStyleSheet(fn.set_style(self.name))
 
         # Frame 1 Items
         self.line_1 = QLineEdit()
@@ -631,7 +615,8 @@ class Inventory(QFrame):
             error_maquina.setText(
                 "No as seleccionado una 'Maquina'.")
             error_maquina.setInformativeText(
-                "Debes seleccionar un numero de maquina para poder guardar el registro."
+                """Debes seleccionar un numero de maquina para poder guardar
+                el registro."""
             )
             error_maquina.setIcon(QMessageBox.Critical)
             error_maquina.exec_()

@@ -2,10 +2,10 @@ import mariadb
 import serial
 import serial.tools.list_ports
 
-# try:
-#     from . import constants as cn
-# except ImportError:
-#     import constants as cn
+try:
+    from . import constants as cn
+except ImportError:
+    import constants as cn
 
 
 def set_port():
@@ -32,6 +32,25 @@ def set_port():
         except BaseException:
             pass
     return port
+
+
+def set_style(name):
+    if name == cn.areas[0] or name == cn.areas[7]:
+        return cn.corte_m1
+    elif name == cn.areas[1]:
+        return cn.medios_m1
+    elif name == cn.areas[2] or name == cn.areas[8]:
+        return cn.corte_m2
+    elif name == cn.areas[3]:
+        return cn.medios_m2
+    elif name == cn.areas[4]:
+        return cn.batt
+    elif name == cn.areas[6]:
+        return cn.materiales
+    elif name == cn.areas[5]:
+        return cn.ensamble
+    else:
+        return cn.default
 
 
 def calc_amount(
