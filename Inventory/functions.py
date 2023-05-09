@@ -1,6 +1,7 @@
 import mariadb
 import serial
 import serial.tools.list_ports
+from datetime import date
 
 try:
     from . import constants as cn
@@ -232,6 +233,18 @@ def manual_input(database, master):
             return True
         else:
             return False
+
+
+def get_history(maquina: str, equipo: str, db: dict):
+    fecha = date.today().strftime("%Y-%m-%d"),  # Fecha
+    con = mariadb.connect(**db)
+    cur = con.cursor()
+    cur.execute('''
+        SELECT * FROM inventario_mensual WHERE maquina = 's%'
+                AND equipo = 's%'
+                AND fecha LIKE 's%';
+                ''', (maquina, equipo, fecha + '%'))
+    result = cur.fetchall()
 
 
 if __name__ == "__main__":
