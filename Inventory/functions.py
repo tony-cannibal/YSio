@@ -215,9 +215,12 @@ def get_code_elements(code: str) -> list:
 
 
 def check_pkg(current, code_elements):
-    if current[1] == code_elements[1]:
-        current[7] = code_elements[2]
-    return current
+    try:
+        if current[1] == code_elements[1]:
+            current[7] = code_elements[2]
+        return current
+    except IndexError:
+        return []
 
 
 def manual_input(database, master):
@@ -237,21 +240,29 @@ def manual_input(database, master):
 
 def get_history(maquina: str, equipo: str, db: dict):
     fecha = date.today().strftime("%Y-%m-%d") + '%'  # Fecha
-    print(maquina, equipo, fecha)
+    # print(maquina, equipo, fecha)
     con = mariadb.connect(**db)
     cur = con.cursor()
-    cur.execute('''
-        SELECT * FROM inventario_mensual WHERE maquina = %s
-                AND fecha LIKE %s;
-                ''', (maquina, fecha))
-    res = cur.fetchall()
-    history = []
-    for i in res:
-        record = [i[1], i[2], i[3], i[4], i[7], i[5], i[8], i[6], i[9]]
-        history.append(list(record))
-    print(history)
 
-    return history
+    cur.execute("SELECT * FROM conditions WHERE state = 'check history';")
+    history_condition = cur.fetchone()[2]
+    if history_condition == 1:
+        cur.execute('''
+            SELECT * FROM inventario_mensual WHERE maquina = %s
+                    AND fecha LIKE %s;
+                    ''', (maquina, fecha))
+        res = cur.fetchall()
+        history = []
+        for i in res:
+            record = [i[1], i[2], i[3], i[4], i[7],
+                      i[5], i[10], i[6], i[9], i[8]]
+            print(record)
+            history.append(list(record))
+        # print(history)
+
+        return history
+    else:
+        return []
 
 
 if __name__ == "__main__":
