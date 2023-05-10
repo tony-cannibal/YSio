@@ -386,6 +386,7 @@ class Inventory(QFrame):
         self.box_1.toggled.connect(self.get_amount)
         self.line_2.returnPressed.connect(self.save_record)
         self.button_1.clicked.connect(self.get_weight)
+        self.combo.currentIndexChanged.connect(self.get_machine_hist)
 
         #######################################################################
 
@@ -624,6 +625,7 @@ class Inventory(QFrame):
 
     def display_history(self):
         self.table_2.setRowCount(len(self.history))
+        print(self.history)
         row_labels = []
         tablerow = 0
         for row in self.history:
@@ -639,25 +641,25 @@ class Inventory(QFrame):
                 QtCore.Qt.AlignCenter)
             # Cantidad
             self.table_2.setItem(
-                tablerow, 2, QtWidgets.QTableWidgetItem(row[3]))
+                tablerow, 2, QtWidgets.QTableWidgetItem(str(row[3])))
             self.table_2.item(tablerow, 2).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # peso
             self.table_2.setItem(
-                tablerow, 3, QtWidgets.QTableWidgetItem(row[5]))
+                tablerow, 3, QtWidgets.QTableWidgetItem(str(row[5])))
             self.table_2.item(tablerow, 3).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # Maquina
             self.table_2.setItem(
-                tablerow, 4, QtWidgets.QTableWidgetItem(row[4]))
+                tablerow, 4, QtWidgets.QTableWidgetItem(str(row[4])))
             self.table_2.item(tablerow, 4).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # Area
             self.table_2.setItem(
-                tablerow, 5, QtWidgets.QTableWidgetItem(row[6]))
+                tablerow, 5, QtWidgets.QTableWidgetItem(str(row[6])))
             self.table_2.item(tablerow, 5).setTextAlignment(
                 QtCore.Qt.AlignCenter)
-            # fecha
+            # Valor
             self.table_2.setItem(
                 tablerow, 6, QtWidgets.QTableWidgetItem(row[7]))
             self.table_2.item(tablerow, 6).setTextAlignment(
@@ -687,6 +689,14 @@ class Inventory(QFrame):
         self.line_2.setText("")
         self.line_2.setText(weight)
         self.line_2.setFocus()
+
+    def get_machine_hist(self):
+        maquina = self.combo.currentText().strip()
+        history = fn.get_history(maquina, self.equipo, self.database)
+        if len(history) > 0:
+            self.history = history
+            self.display_history()
+        # print(history)
 
 
 def main():

@@ -236,15 +236,22 @@ def manual_input(database, master):
 
 
 def get_history(maquina: str, equipo: str, db: dict):
-    fecha = date.today().strftime("%Y-%m-%d"),  # Fecha
+    fecha = date.today().strftime("%Y-%m-%d") + '%'  # Fecha
+    print(maquina, equipo, fecha)
     con = mariadb.connect(**db)
     cur = con.cursor()
     cur.execute('''
-        SELECT * FROM inventario_mensual WHERE maquina = 's%'
-                AND equipo = 's%'
-                AND fecha LIKE 's%';
-                ''', (maquina, equipo, fecha + '%'))
-    result = cur.fetchall()
+        SELECT * FROM inventario_mensual WHERE maquina = %s
+                AND fecha LIKE %s;
+                ''', (maquina, fecha))
+    res = cur.fetchall()
+    history = []
+    for i in res:
+        record = [i[1], i[2], i[3], i[4], i[7], i[5], i[8], i[6], i[9]]
+        history.append(list(record))
+    print(history)
+
+    return history
 
 
 if __name__ == "__main__":

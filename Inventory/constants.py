@@ -41,7 +41,7 @@ table2_headers = [
     "Cantidad",
     "Peso",
     "Maquina",
-    "Area",
+    "Equipo",
     "Valor",
 ]
 
