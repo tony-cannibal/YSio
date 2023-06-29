@@ -2,11 +2,10 @@ import mariadb
 import serial
 import serial.tools.list_ports
 
-try:
-    from . import constants as cn
-except ImportError:
-    import constants as cn
-
+# try:
+#     from . import constants as cn
+# except ImportError:
+#     import constants as cn
 
 
 def set_port():
@@ -57,14 +56,14 @@ def get_inv_area(query, database):
     try:
         con = mariadb.connect(**database)
         cur = con.cursor(buffered=True)
-        cur.execute('SELECT * FROM areas_inventario where codigo = %s;', (query,))
+        cur.execute(
+            'SELECT * FROM areas_inventario where codigo = %s;', (query,))
         res = cur.fetchone()
         cur.close()
-        return res
+        return list(res)
     except mariadb.OperationalError:
         res = "No Conection"
         return res
-
 
 
 if __name__ == "__main__":

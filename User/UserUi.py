@@ -9,6 +9,7 @@ from .Passwd import PasswdUi
 from .Rivian import RivianUi
 from .Aduana import AduanaUi
 
+
 class User(QMainWindow):
 
     def __init__(self, user, path, database, close_callback=False):
@@ -20,10 +21,10 @@ class User(QMainWindow):
         self.area = user[3]
         self.subarea = user[4]
         self.turno = user[5]
-        self.acceso = [ i.strip() for i in user[6].split(',') ]
+        self.acceso = [i.strip() for i in user[6].split(',')]
         self.path = path
         self.database = database
-        self.today = [ int(i) for i in str(date.today()).split('-') ]
+        self.today = [int(i) for i in str(date.today()).split('-')]
         self.close_callback = close_callback
 
         self.pass_wd = None
@@ -81,12 +82,13 @@ class User(QMainWindow):
         user_image = f'//172.18.0.45/Engineering/0. Backup Ingenieria 27/Elaboracion/SIO/fotos/{self.noreloj}.PNG'
         default_image = f'{self.path}/src/default.png'
 
-        self.user = QPixmap(user_image if os.path.exists(user_image) else default_image)
+        self.user = QPixmap(user_image if os.path.exists(
+            user_image) else default_image)
         self.label_img = QLabel()
         self.label_img.setPixmap(self.user)
         self.label_img.setScaledContents(True)
         self.label_img.setSizePolicy(QSizePolicy.Expanding,
-                                    QSizePolicy.Expanding)
+                                     QSizePolicy.Expanding)
         self.label_img.setStyleSheet('''
             border-style: solid;
             border-color: black;
@@ -111,12 +113,11 @@ class User(QMainWindow):
         self.label_id.setAlignment(QtCore.Qt.AlignCenter)
         self.label_id.setFont(labelFont)
 
-        main_grid.addWidget(self.label_img, 0 , 0)
-        main_grid.addWidget(self.label_name, 1 , 0)
-        main_grid.addWidget(self.label_id, 2 , 0)
+        main_grid.addWidget(self.label_img, 0, 0)
+        main_grid.addWidget(self.label_name, 1, 0)
+        main_grid.addWidget(self.label_id, 2, 0)
 
 #################################################################
-
 
         if self.acceso[0] != '99':
             self.button_usuarios.setEnabled(False)
@@ -128,7 +129,6 @@ class User(QMainWindow):
 
 #################################################################
 
-
         self.button_aduana.triggered.connect(self.aduana)
         self.button_rivian.triggered.connect(self.rivian)
         self.button_salir.triggered.connect(self.salir)
@@ -136,9 +136,9 @@ class User(QMainWindow):
 
 #################################################################
 
-
     def show_pass(self):
-        self.pass_wd = PasswdUi.Pass(self.nombre_completo, self.noreloj, self.passwd, self.database)
+        self.pass_wd = PasswdUi.Pass(
+            self.nombre_completo, self.noreloj, self.passwd, self.database)
         self.pass_wd.update_password.connect(self.pass_update)
         self.pass_wd.show()
 
@@ -146,14 +146,16 @@ class User(QMainWindow):
         if self.aduan_ui:
             self.aduan_ui.showMaximized()
         else:
-            self.aduan_ui = AduanaUi.Aduana(self.noreloj, self.nombre_completo, self.area, self.database, self.path)
+            self.aduan_ui = AduanaUi.Aduana(
+                self.noreloj, self.nombre_completo, self.area, self.database, self.path)
             self.aduan_ui.showMaximized()
 
     def rivian(self):
         if self.rivian_ui:
             self.rivian_ui.showMaximized()
         else:
-            self.rivian_ui = RivianUi.Rivian(self.noreloj, self.database, self.today, self.path)
+            self.rivian_ui = RivianUi.Rivian(
+                self.noreloj, self.database, self.today, self.path)
             self.rivian_ui.showMaximized()
 
     def pass_update(self, new_pass):
@@ -177,12 +179,15 @@ class User(QMainWindow):
             self.aduan_ui.close()
         self.close()
 
+
 def main():
     app = QApplication(sys.argv)
 
-    window = User(17040267, "Luis", "Castro", "M1", "Ingenieria", "Administrador")
+    window = User(17040267, "Luis", "Castro", "M1",
+                  "Ingenieria", "Administrador")
     window.show()
     sys.exit(app.exec_())
+
 
 if __name__ == '__main__':
 

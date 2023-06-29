@@ -36,13 +36,14 @@ amount_limit = {
 }
 
 table2_headers = [
-    "Yura",
+    "ID",
     "Proveedor",
+    "Yura",
     "Cantidad",
     "Peso",
-    "Maquina",
-    "Equipo",
     "Valor",
+    "Equipo",
+    "Sub Area",
 ]
 
 simbols = [

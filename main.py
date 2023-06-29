@@ -28,9 +28,9 @@ class Controller:
         self.login.switch_window_user.connect(self.show_user)
         self.login.show()
 
-    def show_main(self, name, area, sub_area, equipo, port):
+    def show_main(self, equipo, port):
         self.window = InventoryUi.Inventory(
-            name, area, sub_area, equipo, port, self.path, self.database
+            equipo, port, self.path, self.database
         )
         self.login.close()
         self.window.show()

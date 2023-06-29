@@ -17,16 +17,17 @@ except ImportError:
 
 # noinspection PyUnresolvedReferences
 class Inventory(QFrame):
-    def __init__(self, name, area, sub_area, equipo, port, path, database):
+    def __init__(self, equipo, port, path, database):
         super().__init__()
 
-        self.name = name
-        self.area = area
-        self.sub_area = sub_area
+        self.name = equipo[0]
+        self.area = equipo[1]
+        self.sub_area = equipo[2]
+        self.equipo = equipo[3]
+        self.manual = bool(equipo[4])
         self.port = port
         self.root_path = path
         self.database = database
-        self.equipo = equipo
         self.materials = {}
         cable = self.sub_area[:5]
 
@@ -47,7 +48,7 @@ class Inventory(QFrame):
         self.code = []
         self.master = fn.check_master(self.equipo)
         self.service = fn.check_service(self.equipo)
-        self.manual = fn.manual_input(self.database, self.master)
+        # self.manual = fn.manual_input(self.database, self.master)
 
         # self.setStyleSheet('background-color: black;')
 
@@ -348,9 +349,9 @@ class Inventory(QFrame):
         self.table_2.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.table_2.setSelectionBehavior(QtWidgets.QTableView.SelectRows)
-        self.table_2.setColumnCount(7)
+        self.table_2.setColumnCount(8)
         self.table_2.setHorizontalHeaderLabels(cn.table2_headers)
-        self.table_2.setColumnWidth(0, 100)
+        self.table_2.setColumnWidth(0, 80)
         self.table_2.setColumnWidth(1, 120)
         self.table_2.setColumnWidth(2, 80)
         self.table_2.setColumnWidth(3, 80)
@@ -359,7 +360,7 @@ class Inventory(QFrame):
         self.table_2.setColumnWidth(6, 100)
         self.table_2.setEditTriggers(
             QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.table_2.setFont(QFont("Consolas", 9))
+        self.table_2.setFont(QFont("Consolas", 11))
 
         # Add Items to Frame 2
         grid_2.addWidget(self.label_2_1, 1, 2)
@@ -605,12 +606,12 @@ class Inventory(QFrame):
                     ]
                     # print(ob)
                     if float(peso) < limit or value != "Peso":
-                        self.history.append(ob)
+                        # self.history.append(ob)
                         fn.capture_value(
                             ob, self.equipo, self.sub_area.split()[
                                 0], self.database
                         )
-                        self.display_history()
+                        self.get_machine_hist()
                         self.line_1.setText("")
                         self.line_2.setText("")
                         self.label_amount.setText("0")
@@ -638,13 +639,14 @@ class Inventory(QFrame):
                 error_maquina.setText(
                     "No as seleccionado una 'Maquina'.")
                 error_maquina.setInformativeText(
-                    """Debes seleccionar un numero de maquina para poder 
+                    """Debes seleccionar un numero de maquina para poder
                     guardar el registro."""
                 )
                 error_maquina.setIcon(QMessageBox.Critical)
                 error_maquina.exec_()
 
     def display_history(self):
+
         self.table_2.setRowCount(len(self.history))
         # print(self.history)
         row_labels = []
@@ -652,40 +654,44 @@ class Inventory(QFrame):
         for row in self.history:
             # Yura
             self.table_2.setItem(
-                tablerow, 0, QtWidgets.QTableWidgetItem(row[1]))
+                tablerow, 0, QtWidgets.QTableWidgetItem(str(row[0])))
             self.table_2.item(tablerow, 0).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # Proveedor
             self.table_2.setItem(
-                tablerow, 1, QtWidgets.QTableWidgetItem(row[0]))
+                tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
             self.table_2.item(tablerow, 1).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # Cantidad
             self.table_2.setItem(
-                tablerow, 2, QtWidgets.QTableWidgetItem(str(row[3])))
+                tablerow, 2, QtWidgets.QTableWidgetItem(str(row[2])))
             self.table_2.item(tablerow, 2).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # peso
             self.table_2.setItem(
-                tablerow, 3, QtWidgets.QTableWidgetItem(str(row[5])))
+                tablerow, 3, QtWidgets.QTableWidgetItem(str(row[4])))
             self.table_2.item(tablerow, 3).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # Maquina
             self.table_2.setItem(
-                tablerow, 4, QtWidgets.QTableWidgetItem(str(row[4])))
+                tablerow, 4, QtWidgets.QTableWidgetItem(str(row[5])))
             self.table_2.item(tablerow, 4).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # Equipo
             self.table_2.setItem(
-                tablerow, 5, QtWidgets.QTableWidgetItem(str(row[9])))
+                tablerow, 5, QtWidgets.QTableWidgetItem(str(row[6])))
             self.table_2.item(tablerow, 5).setTextAlignment(
                 QtCore.Qt.AlignCenter)
             # Valor
             self.table_2.setItem(
-                tablerow, 6, QtWidgets.QTableWidgetItem(row[7]))
+                tablerow, 6, QtWidgets.QTableWidgetItem(row[8]))
             self.table_2.item(tablerow, 6).setTextAlignment(
                 QtCore.Qt.AlignCenter)
-            self.table_2.setRowHeight(tablerow, 20)
+            self.table_2.setItem(
+                tablerow, 7, QtWidgets.QTableWidgetItem(row[10]))
+            self.table_2.item(tablerow, 7).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            # self.table_2.setRowHeight(tablerow, 20)
             tablerow += 1
         for i in range(len(self.history)):
             row_labels.append(str(i + 1) + "  ")

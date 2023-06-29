@@ -2,10 +2,10 @@ import sys
 import os
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtWidgets import *
+# from PyQt5.QtWidgets import *
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QTabWidget, QFrame, QGridLayout, QLabel, QLineEdit,
-    QSizePolicy, QSpacerItem, QMessageBox
+    QSizePolicy, QSpacerItem, QMessageBox, QApplication
 )
 
 try:
@@ -17,7 +17,7 @@ except ImportError:
 
 
 class Login(QWidget):
-    switch_window = QtCore.pyqtSignal(str, str, str, str, str)
+    switch_window = QtCore.pyqtSignal(list, str)
     switch_window_user = QtCore.pyqtSignal(tuple)
     # switch_window_aduana = QtCore.pyqtSignal(str)
 
@@ -203,7 +203,7 @@ class Login(QWidget):
                 port = '0'
             if port == '0':
                 self.warning.exec_()
-            self.switch_window.emit(area[2], area[3], area[4], area[5], port)
+            self.switch_window.emit(area[2:], port)
         elif area == unconected:
             self.noConection.exec_()
             self.inv_code.setText('')
@@ -244,7 +244,8 @@ class Login(QWidget):
             if port == '0':
                 self.warning.exec_()
             self.switch_window.emit(area[2], area[3], area[4], area[5], port)
-        elif query in cn.aduana_areas and (user != unconected or area != unconected):
+        elif query in cn.aduana_areas and (
+                user != unconected or area != unconected):
             self.switch_window_aduana.emit(cn.aduana_areas[query][1])
         elif user and user != unconected:
             if query == str(user[0]):
