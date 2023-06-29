@@ -254,7 +254,7 @@ def get_history(maquina: str, equipo: str, db: dict):
         res = cur.fetchall()
         history = []
         for i in res:
-            print(i)
+            # print(i)
             history.append(list(i))
         # print(history)
         return history
