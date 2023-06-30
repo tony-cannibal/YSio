@@ -696,6 +696,7 @@ class Inventory(QFrame):
         for i in range(len(self.history)):
             row_labels.append(str(i + 1) + "  ")
         self.table_2.setVerticalHeaderLabels(row_labels)
+        self.table_2.setCurrentCell(len(self.history) - 1, 0)
 
     def get_weight(self):
         if self.port == "0":
