@@ -147,8 +147,8 @@ class Login(QWidget):
 #########################################################################
 #########################################################################
 
-        self.tab_widget.addTab(self.tab1, 'Usuario')
         self.tab_widget.addTab(self.tab2, 'Inventario')
+        self.tab_widget.addTab(self.tab1, 'Usuario')
 
 
 #########################################################################
@@ -178,7 +178,7 @@ class Login(QWidget):
         self.line_password.returnPressed.connect(self.login_user)
         self.tab_widget.currentChanged.connect(self.set_cursor)
 
-        self.line_user.setFocus()
+        self.inv_code.setFocus()
 
 #########################################################################
 #########################################################################
