@@ -15,7 +15,6 @@ except ImportError:
     import constants as cn
 
 
-# noinspection PyUnresolvedReferences
 class Inventory(QFrame):
     def __init__(self, equipo, port, path, database):
         super().__init__()
