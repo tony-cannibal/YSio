@@ -124,7 +124,7 @@ def search_mats(data: dict, query: str) -> list:
     for i in data.values():
 
         if len(query) >= 20:
-            if query[1:q] in i[0]:
+            if query in i[0]:
                 res.append(i)
         else:
             if query in i[0]:
@@ -193,6 +193,8 @@ def get_qty(code: str, qcount: int) -> str:
 
 
 def get_subcode(code: str, qcount: int) -> str:
+    if code[-1] == "Q":
+        code = code[:-2]
     start = 1
     end = 0
     if qcount == 2:
@@ -200,6 +202,13 @@ def get_subcode(code: str, qcount: int) -> str:
     else:
         end = code.find('Q')
     return code[start:end]
+
+
+def check_code(code_text: str):
+    if code_text[-1] == "Q":
+        code_text = code_text[:-2]
+    code_elements = {}
+    code_elements["P"] = code_text[0] if code_text != '' else ''
 
 
 def get_code_elements(code: str) -> list:
@@ -210,7 +219,7 @@ def get_code_elements(code: str) -> list:
         elements = [code, subcode, qty]
         return elements
     else:
-        elements = [code, '', '']
+        elements = [code, code, '']
         return elements
 
 

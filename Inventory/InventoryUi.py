@@ -446,7 +446,8 @@ class Inventory(QFrame):
         first_char = code[0] if code != '' else ''
         length = len(code)
         if (self.manual is False and
-                first_char != 'P' and length < 20 and 'Q' not in code):
+                first_char != 'P' and
+                length < 20 and 'Q' not in code and "S" not in code):
             codig_no_permitido = QMessageBox()
             codig_no_permitido.setWindowTitle("Error de Codigo")
             codig_no_permitido.setText("Codigo Manual No Permitido.")
@@ -459,7 +460,7 @@ class Inventory(QFrame):
             return
 
         self.code = fn.get_code_elements(self.line_1.text().strip())
-        res = fn.search_mats(self.materials, self.code[0])
+        res = fn.search_mats(self.materials, self.code[1])
         self.table_1.setRowCount(len(res))
         tablerow = 0
         for row in res:
@@ -480,8 +481,12 @@ class Inventory(QFrame):
         self.table_1.setCurrentCell(1, 0)
         self.table_1.setCurrentCell(0, 0)
 
-        if len(res) != 0:
-            self.line_1.setText("")
+        # if len(res) != 0:
+        #     self.line_1.setText("")
+        self.line_1.setText("")
+        if len(res) == 0:
+            self.current_sel = []
+            self.table_update_label()
 
     def table_update_label(self):
         sel = self.table_1.currentRow()
