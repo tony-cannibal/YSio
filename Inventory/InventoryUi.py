@@ -23,7 +23,11 @@ class Inventory(QFrame):
         self.area = equipo[1]
         self.sub_area = equipo[2]
         self.equipo = equipo[3]
-        self.manual = bool(equipo[4])
+        self.config = {
+            "manualInput": bool(equipo[4]),
+            "radioReset": bool(equipo[5])
+        }
+        # self.manual = bool(equipo[4])
         self.port = port
         self.root_path = path
         self.database = database
@@ -86,7 +90,7 @@ class Inventory(QFrame):
         self.line_1 = QLineEdit()
         self.line_1.setFont(QFont("Consolas", 14))
         self.line_1.setStyleSheet(cn.line_theme)
-        if self.manual is False:
+        if self.config["manualInput"] is False:
             self.line_1.setEchoMode(QLineEdit.Password)
 
         self.line_2 = QLineEdit()
@@ -445,7 +449,7 @@ class Inventory(QFrame):
         code = self.line_1.text().strip()
         first_char = code[0] if code != '' else ''
         length = len(code)
-        if (self.manual is False and
+        if (self.config["manualInput"] is False and
                 first_char != 'P' and
                 length < 20 and 'Q' not in code and "S" not in code):
             codig_no_permitido = QMessageBox()
@@ -488,6 +492,8 @@ class Inventory(QFrame):
             self.current_sel = []
             self.table_update_label()
 
+        self.line_2.setFocus()
+
     def table_update_label(self):
         sel = self.table_1.currentRow()
         if sel != -1:
@@ -516,7 +522,10 @@ class Inventory(QFrame):
         self.label_amount.setText("0")
 
         if self.radio2.isChecked():
-            self.label_amount.setText(str(self.current_sel[7]))
+            try:
+                self.label_amount.setText(str(self.current_sel[7]))
+            except IndexError:
+                self.label_amount.setText("")
 
     def get_amount(self):
         '''Calculate the amount.'''
@@ -621,7 +630,8 @@ class Inventory(QFrame):
                         self.label_amount.setText("0")
                         self.table_1.clearContents()
                         self.table_1.setRowCount(0)
-                        self.radio1.setChecked(True)
+                        if self.config["radioReset"] is True:
+                            self.radio1.setChecked(True)
                         self.current_sel = []
                         self.table_update_label()
                         self.line_1.setFocus()

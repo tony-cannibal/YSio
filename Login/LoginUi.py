@@ -197,6 +197,7 @@ class Login(QWidget):
         query = self.inv_code.text().strip()
         area = fn.get_inv_area(query, self.database)
         unconected = "No Conection"
+        print(area)
         if area and area != unconected:
             port = fn.set_port()
             if not port:
