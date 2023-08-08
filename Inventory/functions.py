@@ -150,8 +150,10 @@ def get_materiales_cables(database: dict) -> list:
     cur = con.cursor()
     # cur.execute(
     #     "SELECT * FROM materiales where tipo = 'CABLE';")
+    # cur.execute(
+    #     "SELECT * FROM materiales where tipo = 'CABLE' OR tipo = 'CABLE SAM';")
     cur.execute(
-        "SELECT * FROM materiales where tipo = 'CABLE' OR tipo = 'CABLE SAM';")
+        "SELECT * FROM materiales where tipo LIKE 'CABLE%';")
     res = cur.fetchall()
     cur.close()
     res = [list(i) for i in res]
