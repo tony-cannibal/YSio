@@ -1,10 +1,15 @@
 import sys
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QDate
-from PyQt5.QtGui import QFont, QPixmap
-from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import (
+    QWidget, QVBoxLayout, QLineEdit, QLabel, QTabWidget, QGridLayout,
+    QSizePolicy, QTableWidget, QRadioButton, QSpacerItem, QDateTimeEdit,
+    QPushButton, QMessageBox, QFileDialog, QApplication
+)
 from datetime import date
 import os
+import configparser
 
 try:
     from . import functions as fn
@@ -20,7 +25,10 @@ class Aduana(QWidget):
 
         self.noreloj = noreloj
         self.nombre = nombre
-        self.area = area
+        config = configparser.ConfigParser()
+        config.read('src/sio.ini')
+        # self.area = area
+        self.area = config['config']['area']
         self.database = database
         self.root_path = path
         self.search = []
@@ -49,10 +57,11 @@ class Aduana(QWidget):
         self.table_1.setColumnWidth(0, 200)
         for i in [4, 5, 7, 8]:
             self.table_1.setColumnWidth(i, 200)
-        self.table_1.setHorizontalHeaderLabels(["Codigo", "Lote", "Circuito", "Tabla",
-                                                "Fecha de Entrada", "Hora de Entrada",
-                                                "Estado", "Fecha de Salida", "Hora de Salida",
-                                                "Area"])
+        self.table_1.setHorizontalHeaderLabels(
+            ["Codigo", "Lote", "Circuito", "Tabla",
+             "Fecha de Entrada", "Hora de Entrada",
+             "Estado", "Fecha de Salida", "Hora de Salida",
+             "Area"])
         self.table_1.setEditTriggers(
             QtWidgets.QAbstractItemView.NoEditTriggers)
         self.table_1.setAlternatingRowColors(True)
@@ -133,17 +142,21 @@ class Aduana(QWidget):
         self.table_2.setColumnWidth(0, 200)
         for i in [4, 5, 7, 8]:
             self.table_2.setColumnWidth(i, 200)
-        # self.table_2.horizontalHeader().setStyleSheet('::section{Background-color:rgb(197, 197, 197)}')
-        # self.table_2.verticalHeader().setStyleSheet('::section{Background-color:rgb(197, 197, 197)}')
-        self.table_2.setHorizontalHeaderLabels(["Codigo", "Lote", "Circuito", "Tabla",
-                                                "Fecha de Entrada", "Hora de Entrada",
-                                                "Estado", "Fecha de Salida", "Hora de Salida",
-                                                "Area"])
+        # self.table_2.horizontalHeader().setStyleSheet(
+        #        '::section{Background-color:rgb(197, 197, 197)}')
+        # self.table_2.verticalHeader().setStyleSheet(
+        #        '::section{Background-color:rgb(197, 197, 197)}')
+        self.table_2.setHorizontalHeaderLabels(
+            ["Codigo", "Lote", "Circuito", "Tabla",
+             "Fecha de Entrada", "Hora de Entrada",
+             "Estado", "Fecha de Salida", "Hora de Salida",
+             "Area"])
         self.table_2.setEditTriggers(
             QtWidgets.QAbstractItemView.NoEditTriggers)
         self.table_2.setAlternatingRowColors(True)
         # for i in range(10):
-        #     self.table_2.horizontalHeaderItem(i).setFont(QFont('Arial Black', 14))
+        #     self.table_2.horizontalHeaderItem(i).setFont(QFont(
+        #    'Arial Black', 14))
 
         self.button1 = QPushButton()
         self.button1.setText('Excel')
@@ -346,11 +359,14 @@ class Aduana(QWidget):
 
     def aduana(self):
         code = self.line_1.text()
+        if len(code) < 11:
+            print("code too short")
+            return
         if code[0] == '!' and code[-1] == ';' and code[11] == ';' and code[-5] == ';':
             query = fn.read_code(code)
             self.line_1.setText('')
 
-            ### Entrada ###
+            # Entrada #
             if self.radio_1.isChecked():
                 if not fn.check_db(code, self.database):
                     fn.save_circuit(query, self.area, self.database)
@@ -363,7 +379,7 @@ class Aduana(QWidget):
                     enter_error.setIcon(QMessageBox.Warning)
                     enter_error.exec_()
 
-            ### Salida ###
+            # Salida ###
             else:
                 if fn.check_db(code, self.database):
                     circuito = fn.check_db(code, self.database)
@@ -376,7 +392,9 @@ class Aduana(QWidget):
                         exit_error = QMessageBox()
                         exit_error.setWindowTitle('Error')
                         exit_error.setText(
-                            f'Este Cicuito salio el\n {circuito[7]} a las \n{circuito[8]}')
+                            f'''Este Cicuito salio el
+                                {circuito[7]} a las
+                                {circuito[8]}''')
                         exit_error.setIcon(QMessageBox.Warning)
                         exit_error.exec_()
                 else:
@@ -388,7 +406,7 @@ class Aduana(QWidget):
                     exit_error_1.exec_()
         else:
             self.line_1.setText('')
-            print('codigo no valido')
+            # print('codigo no valido')
 
     def radio_toggle(self):
         if self.radio_1.isChecked():
@@ -406,7 +424,7 @@ class Aduana(QWidget):
         if not (self.radio_3.isChecked()):
             res = fn.search_full_hist(query, self.database, self.area)
             if len(res) == 0:
-                print("No hay resultados.")
+                # print("No hay resultados.")
                 result_error = QMessageBox()
                 result_error.setWindowTitle('Sin Resultados')
                 result_error.setText('No se encontraron resultados')
@@ -421,7 +439,7 @@ class Aduana(QWidget):
                 res = fn.search_enter_date_hist(
                     query, date_1, date_2, self.database, self.area)
                 if len(res) == 0:
-                    print("No hay resultados.")
+                    # print("No hay resultados.")
                     result_error = QMessageBox()
                     result_error.setWindowTitle('Sin Resultados')
                     result_error.setText('No se encontraron resultados')

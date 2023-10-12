@@ -23,7 +23,6 @@ def database(use_general):
             'user': 'yurano',
             'password': 'yuracorporation4200',
             'port': 3306
-
         }
         return db
 
