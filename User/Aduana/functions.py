@@ -11,6 +11,7 @@ def read_code(code):
     lot, circuit, number = code[1:-1].split(';')
     return [code, lot, circuit, number]
 
+
 def check_db(query, database):
     con = mariadb.connect(**database)
     cur = con.cursor()
@@ -19,6 +20,7 @@ def check_db(query, database):
     res = cur.fetchone()
     cur.close()
     return res
+
 
 def save_circuit(info, area, database):
     today = date.today().strftime('%Y-%m-%d')
@@ -33,6 +35,7 @@ def save_circuit(info, area, database):
     con.commit()
     cur.close()
 
+
 def exit_circuit(code, database):
     today = date.today().strftime('%Y-%m-%d')
     time = datetime.now().strftime("%H:%M:%S")
@@ -46,6 +49,7 @@ def exit_circuit(code, database):
     con.commit()
     con.close()
 
+
 def get_enter_history(area, database):
     today = date.today().strftime('%Y-%m-%d')
     con = mariadb.connect(**database)
@@ -55,6 +59,7 @@ def get_enter_history(area, database):
     res = cur.fetchall()
     cur.close()
     return res
+
 
 def get_exit_history(area, database):
     today = date.today().strftime('%Y-%m-%d')
@@ -66,45 +71,51 @@ def get_exit_history(area, database):
     cur.close()
     return res
 
-def search_full_hist(query, database):
+
+def search_full_hist(query, database, area):
     con = mariadb.connect(**database)
     cur = con.cursor()
     cur.execute('''
-        SELECT * FROM aduana 
-        WHERE lote = %s 
+        SELECT * FROM aduana
+        WHERE lote = %s
         OR circuito LIKE %s
-        OR codigo like %s;
-        ''',( '%'+query+'%', '%'+query+'%', '%'+query+'%'))
+        OR codigo like %s
+        AND area = %s;
+        ''', ('%'+query+'%', '%'+query+'%', '%'+query+'%', area))
     res = cur.fetchall()
     cur.close()
     return res
 
-def search_enter_date_hist(query, date_1, date_2, database):
+
+def search_enter_date_hist(query, date_1, date_2, database, area):
+    print(area)
     con = mariadb.connect(**database)
     cur = con.cursor()
     cur.execute('''
         SELECT * FROM aduana 
-        WHERE lote = %s 
-        OR circuito LIKE %s
-        OR codigo like %s
+        WHERE lote = %s AND area = %s
+        OR circuito LIKE %s AND area = %s
+        OR codigo like %s AND area = %s
         ;
-        ''',( '%'+query+'%', '%'+query+'%', '%'+query+'%'))
-    res = [ i for i in cur.fetchall() if i[4] >= date_1 and i[4] <= date_2 ]
+        ''', ('%'+query+'%', area, '%'+query+'%', area, '%'+query+'%', area))
+    res = [i for i in cur.fetchall() if i[4] >= date_1 and i[4] <= date_2]
     # filtered_res = [ i for i in res if i[4] >= date_1 and i[4] <= date_2 ]
     cur.close()
     return res
+
 
 def export_data(data, save_name):
     try:
         df = pd.DataFrame(
             data, columns=[
-                'codigo', 'lote', 'circuito', 'tabla', 
-                'fecha de entrada', 'hora de entrada', 
-                'estado', 'fecha de salida', 
+                'codigo', 'lote', 'circuito', 'tabla',
+                'fecha de entrada', 'hora de entrada',
+                'estado', 'fecha de salida',
                 'hora de salida', 'area'
             ]
         )
-        df['hora de entrada'] = df['hora de entrada'].values.astype('datetime64')
+        df['hora de entrada'] = df['hora de entrada'].values.astype(
+            'datetime64')
         df['hora de salida'] = df['hora de salida'].values.astype('datetime64')
         df['hora de entrada'] = df['hora de entrada'].dt.strftime('%H:%M:%S')
         df['hora de salida'] = df['hora de salida'].dt.strftime('%H:%M:%S')
@@ -121,9 +132,9 @@ if __name__ == '__main__':
         "user": "yura_admin",
         "password": "Metallica24+",
         "port": 3306
-        }
+    }
     query = ''
-    
-    res = search_full_hist(query ,db)
+
+    res = search_full_hist(query, db)
 
     export_data(res)

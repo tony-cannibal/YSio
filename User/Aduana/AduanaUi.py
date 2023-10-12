@@ -1,4 +1,4 @@
-import sys 
+import sys
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QDate
 from PyQt5.QtGui import QFont, QPixmap
@@ -27,7 +27,7 @@ class Aduana(QWidget):
 
         self.enter_history = fn.get_enter_history(self.area, self.database)
         self.exit_history = fn.get_exit_history(self.area, self.database)
-        self.today = [ int(i) for i in str(date.today()).split('-') ]
+        self.today = [int(i) for i in str(date.today()).split('-')]
 
         self.setWindowTitle("Aduana")
         self.setMinimumSize(800, 400)
@@ -53,7 +53,8 @@ class Aduana(QWidget):
                                                 "Fecha de Entrada", "Hora de Entrada",
                                                 "Estado", "Fecha de Salida", "Hora de Salida",
                                                 "Area"])
-        self.table_1.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table_1.setEditTriggers(
+            QtWidgets.QAbstractItemView.NoEditTriggers)
         self.table_1.setAlternatingRowColors(True)
 
         self.radio_1 = QRadioButton("Entrada")
@@ -70,18 +71,23 @@ class Aduana(QWidget):
             background: none;
             ''')
         self.label_logo.setSizePolicy(QSizePolicy.Expanding,
-                                    QSizePolicy.Expanding)
+                                      QSizePolicy.Expanding)
         self.label_logo.setAlignment(QtCore.Qt.AlignRight)
         self.label_logo.setMaximumHeight(50)
         self.label_logo.setPixmap(self.logo.scaled(66, 66,
-            QtCore.Qt.KeepAspectRatio))
+                                                   QtCore.Qt.KeepAspectRatio))
 
         # Spacers
-        self.spacer1 = QSpacerItem(30, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.spacer2 = QSpacerItem(60, 30, QSizePolicy.Fixed, QSizePolicy.Expanding)
-        self.spacer3 = QSpacerItem(30, 50, QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.spacer4 = QSpacerItem(100, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.spacer5 = QSpacerItem(25, 40, QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.spacer1 = QSpacerItem(
+            30, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.spacer2 = QSpacerItem(
+            60, 30, QSizePolicy.Fixed, QSizePolicy.Expanding)
+        self.spacer3 = QSpacerItem(
+            30, 50, QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.spacer4 = QSpacerItem(
+            100, 30, QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.spacer5 = QSpacerItem(
+            25, 40, QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         # Add Widgets To Layout 1
         tab1_layout.addWidget(self.line_1, 1, 1)
@@ -120,7 +126,6 @@ class Aduana(QWidget):
 
         self.radio_3 = QRadioButton("Fecha")
 
-
         self.line_2.setFixedSize(160, 30)
 
         self.table_2 = QTableWidget()
@@ -130,15 +135,15 @@ class Aduana(QWidget):
             self.table_2.setColumnWidth(i, 200)
         # self.table_2.horizontalHeader().setStyleSheet('::section{Background-color:rgb(197, 197, 197)}')
         # self.table_2.verticalHeader().setStyleSheet('::section{Background-color:rgb(197, 197, 197)}')
-        self.table_2.setHorizontalHeaderLabels(["Codigo", "Lote", "Circuito", "Tabla", 
-                                                "Fecha de Entrada", "Hora de Entrada", 
-                                                "Estado", "Fecha de Salida", "Hora de Salida", 
+        self.table_2.setHorizontalHeaderLabels(["Codigo", "Lote", "Circuito", "Tabla",
+                                                "Fecha de Entrada", "Hora de Entrada",
+                                                "Estado", "Fecha de Salida", "Hora de Salida",
                                                 "Area"])
-        self.table_2.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table_2.setEditTriggers(
+            QtWidgets.QAbstractItemView.NoEditTriggers)
         self.table_2.setAlternatingRowColors(True)
         # for i in range(10):
         #     self.table_2.horizontalHeaderItem(i).setFont(QFont('Arial Black', 14))
-
 
         self.button1 = QPushButton()
         self.button1.setText('Excel')
@@ -146,11 +151,9 @@ class Aduana(QWidget):
         tab2_layout.addWidget(self.table_2, 3, 1, 1, 7)
         tab2_layout.addWidget(self.date_1, 1, 3, 1, 1)
         tab2_layout.addWidget(self.date_2, 1, 4, 1, 1)
-        tab2_layout.addWidget(self.radio_3,1, 2)
+        tab2_layout.addWidget(self.radio_3, 1, 2)
         tab2_layout.addWidget(self.line_2, 1, 1)
         tab2_layout.addWidget(self.button1, 1, 6)
-
-
 
         tab2_layout.addItem(self.spacer4, 1, 5)
         tab2_layout.addItem(self.spacer5, 1, 7)
@@ -160,20 +163,16 @@ class Aduana(QWidget):
         tab2_layout.addItem(self.spacer2, 0, 8, 4, 1)
         tab2_layout.addItem(self.spacer3, 4, 2, 3, 1)
 
-
-
-
         self.tab_widget.addTab(self.tab1, "Aduana")
         self.tab_widget.addTab(self.tab2, "Busqueda")
-
 
         layout.addWidget(self.tab_widget)
 
 #####################################################################
 
-        #Connections 
-        self.line_1.returnPressed.connect(self.aduana) 
-        self.radio_1.toggled.connect(self.radio_toggle)        
+        # Connections
+        self.line_1.returnPressed.connect(self.aduana)
+        self.radio_1.toggled.connect(self.radio_toggle)
         self.line_2.returnPressed.connect(self.history_search)
         self.button1.pressed.connect(self.export_excel)
 
@@ -181,38 +180,60 @@ class Aduana(QWidget):
 
         # Defgault States
         self.radio_1.setChecked(True)
+        self.radio_3.setChecked(True)
+        self.radio_3.setEnabled(False)
         self.line_1.setFocus()
         self.update_entry_table()
 
 #####################################################################
-  
+
     def update_entry_table(self):
         self.table_1.setRowCount(len(self.enter_history))
         row_labels = []
         tablerow = 0
         for row in self.enter_history:
-            self.table_1.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.table_1.item(tablerow, 0).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.table_1.item(tablerow, 1).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-            self.table_1.item(tablerow, 2).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(str(row[3])))
-            self.table_1.item(tablerow, 3).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[4].strftime('%Y-%m-%d')))
-            self.table_1.item(tablerow, 4).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(str(row[5])))
-            self.table_1.item(tablerow, 5).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[6]))
-            self.table_1.item(tablerow, 6).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.table_1.item(tablerow, 0).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.table_1.item(tablerow, 1).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            self.table_1.item(tablerow, 2).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 3, QtWidgets.QTableWidgetItem(str(row[3])))
+            self.table_1.item(tablerow, 3).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(
+                row[4].strftime('%Y-%m-%d')))
+            self.table_1.item(tablerow, 4).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 5, QtWidgets.QTableWidgetItem(str(row[5])))
+            self.table_1.item(tablerow, 5).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 6, QtWidgets.QTableWidgetItem(row[6]))
+            self.table_1.item(tablerow, 6).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             if row[7]:
-                self.table_1.setItem(tablerow, 7, QtWidgets.QTableWidgetItem(row[7].strftime('%Y-%m-%d')))
-                self.table_1.item(tablerow, 7).setTextAlignment(QtCore.Qt.AlignCenter)
-            if row[8]: 
-                self.table_1.setItem(tablerow, 8, QtWidgets.QTableWidgetItem(str(row[8])))
-                self.table_1.item(tablerow, 8).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 9, QtWidgets.QTableWidgetItem(row[9]))
-            self.table_1.item(tablerow, 9).setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table_1.setItem(tablerow, 7, QtWidgets.QTableWidgetItem(
+                    row[7].strftime('%Y-%m-%d')))
+                self.table_1.item(tablerow, 7).setTextAlignment(
+                    QtCore.Qt.AlignCenter)
+            if row[8]:
+                self.table_1.setItem(
+                    tablerow, 8, QtWidgets.QTableWidgetItem(str(row[8])))
+                self.table_1.item(tablerow, 8).setTextAlignment(
+                    QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 9, QtWidgets.QTableWidgetItem(row[9]))
+            self.table_1.item(tablerow, 9).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             self.table_1.setRowHeight(tablerow, 24)
             tablerow += 1
         for i in range(len(self.enter_history)):
@@ -224,26 +245,46 @@ class Aduana(QWidget):
         row_labels = []
         tablerow = 0
         for row in self.exit_history:
-            self.table_1.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.table_1.item(tablerow, 0).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.table_1.item(tablerow, 1).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-            self.table_1.item(tablerow, 2).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(str(row[3])))
-            self.table_1.item(tablerow, 3).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[4].strftime('%Y-%m-%d')))
-            self.table_1.item(tablerow, 4).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(str(row[5])))
-            self.table_1.item(tablerow, 5).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[6]))
-            self.table_1.item(tablerow, 6).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 7, QtWidgets.QTableWidgetItem(row[7].strftime('%Y-%m-%d')))
-            self.table_1.item(tablerow, 7).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_1.setItem(tablerow, 8, QtWidgets.QTableWidgetItem(str(row[8])))
-            self.table_1.item(tablerow, 8).setTextAlignment(QtCore.Qt.AlignCenter)  
-            self.table_1.setItem(tablerow, 9, QtWidgets.QTableWidgetItem(row[9]))
-            self.table_1.item(tablerow, 9).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.table_1.item(tablerow, 0).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.table_1.item(tablerow, 1).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            self.table_1.item(tablerow, 2).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 3, QtWidgets.QTableWidgetItem(str(row[3])))
+            self.table_1.item(tablerow, 3).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(
+                row[4].strftime('%Y-%m-%d')))
+            self.table_1.item(tablerow, 4).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 5, QtWidgets.QTableWidgetItem(str(row[5])))
+            self.table_1.item(tablerow, 5).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 6, QtWidgets.QTableWidgetItem(row[6]))
+            self.table_1.item(tablerow, 6).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(tablerow, 7, QtWidgets.QTableWidgetItem(
+                row[7].strftime('%Y-%m-%d')))
+            self.table_1.item(tablerow, 7).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 8, QtWidgets.QTableWidgetItem(str(row[8])))
+            self.table_1.item(tablerow, 8).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_1.setItem(
+                tablerow, 9, QtWidgets.QTableWidgetItem(row[9]))
+            self.table_1.item(tablerow, 9).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             self.table_1.setRowHeight(tablerow, 24)
             tablerow += 1
         for i in range(len(self.exit_history)):
@@ -253,38 +294,55 @@ class Aduana(QWidget):
     def update_search_table(self, data):
         self.table_2.setRowCount(len(data))
         row_labels = []
-        tablerow = 0 
+        tablerow = 0
         for row in data:
-            self.table_2.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-            self.table_2.item(tablerow, 0).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_2.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-            self.table_2.item(tablerow, 1).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_2.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-            self.table_2.item(tablerow, 2).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_2.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(str(row[3])))
-            self.table_2.item(tablerow, 3).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_2.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[4].strftime('%Y-%m-%d')))
-            self.table_2.item(tablerow, 4).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_2.setItem(tablerow, 5, QtWidgets.QTableWidgetItem(str(row[5])))
-            self.table_2.item(tablerow, 5).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_2.setItem(tablerow, 6, QtWidgets.QTableWidgetItem(row[6]))
-            self.table_2.item(tablerow, 6).setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+            self.table_2.item(tablerow, 0).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.table_2.item(tablerow, 1).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            self.table_2.item(tablerow, 2).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 3, QtWidgets.QTableWidgetItem(str(row[3])))
+            self.table_2.item(tablerow, 3).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_2.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(
+                row[4].strftime('%Y-%m-%d')))
+            self.table_2.item(tablerow, 4).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 5, QtWidgets.QTableWidgetItem(str(row[5])))
+            self.table_2.item(tablerow, 5).setTextAlignment(
+                QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 6, QtWidgets.QTableWidgetItem(row[6]))
+            self.table_2.item(tablerow, 6).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             if row[7]:
-                self.table_2.setItem(tablerow, 7, QtWidgets.QTableWidgetItem(row[7].strftime('%Y-%m-%d')))
-                self.table_2.item(tablerow, 7).setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table_2.setItem(tablerow, 7, QtWidgets.QTableWidgetItem(
+                    row[7].strftime('%Y-%m-%d')))
+                self.table_2.item(tablerow, 7).setTextAlignment(
+                    QtCore.Qt.AlignCenter)
             if row[8]:
-                self.table_2.setItem(tablerow, 8, QtWidgets.QTableWidgetItem(str(row[8])))
-                self.table_2.item(tablerow, 8).setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table_2.setItem(tablerow, 9, QtWidgets.QTableWidgetItem(row[9]))
-            self.table_2.item(tablerow, 9).setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table_2.setItem(
+                    tablerow, 8, QtWidgets.QTableWidgetItem(str(row[8])))
+                self.table_2.item(tablerow, 8).setTextAlignment(
+                    QtCore.Qt.AlignCenter)
+            self.table_2.setItem(
+                tablerow, 9, QtWidgets.QTableWidgetItem(row[9]))
+            self.table_2.item(tablerow, 9).setTextAlignment(
+                QtCore.Qt.AlignCenter)
             self.table_2.setRowHeight(tablerow, 24)
             tablerow += 1
         for i in range(len(data)):
             row_labels.append(str(i + 1) + " ")
         self.table_2.setVerticalHeaderLabels(row_labels)
-
-
-
 
     def aduana(self):
         code = self.line_1.text()
@@ -311,18 +369,21 @@ class Aduana(QWidget):
                     circuito = fn.check_db(code, self.database)
                     if circuito[6] != cn.estados[1]:
                         fn.exit_circuit(code, self.database)
-                        self.exit_history.append(fn.check_db(code, self.database))
+                        self.exit_history.append(
+                            fn.check_db(code, self.database))
                         self.update_exit_table()
                     else:
                         exit_error = QMessageBox()
                         exit_error.setWindowTitle('Error')
-                        exit_error.setText(f'Este Cicuito salio el\n {circuito[7]} a las \n{circuito[8]}')
+                        exit_error.setText(
+                            f'Este Cicuito salio el\n {circuito[7]} a las \n{circuito[8]}')
                         exit_error.setIcon(QMessageBox.Warning)
                         exit_error.exec_()
                 else:
                     exit_error_1 = QMessageBox()
                     exit_error_1.setWindowTitle('Error')
-                    exit_error_1.setText('El Circuito Aun No Se\n A Recolectado')
+                    exit_error_1.setText(
+                        'El Circuito Aun No Se\n A Recolectado')
                     exit_error_1.setIcon(QMessageBox.Warning)
                     exit_error_1.exec_()
         else:
@@ -342,16 +403,33 @@ class Aduana(QWidget):
         query = self.line_2.text()
         date_1 = self.date_1.date().toPyDate()
         date_2 = self.date_2.date().toPyDate()
-        if not(self.radio_3.isChecked()):
-            res = fn.search_full_hist(query, self.database)
-            self.update_search_table(res)
-            self.search = res
+        if not (self.radio_3.isChecked()):
+            res = fn.search_full_hist(query, self.database, self.area)
+            if len(res) == 0:
+                print("No hay resultados.")
+                result_error = QMessageBox()
+                result_error.setWindowTitle('Sin Resultados')
+                result_error.setText('No se encontraron resultados')
+                result_error.setIcon(QMessageBox.Warning)
+                result_error.exec_()
 
-        else:
-            if date_1 <= date_2:
-                res = fn.search_enter_date_hist(query, date_1, date_2, self.database)
+            else:
                 self.update_search_table(res)
                 self.search = res
+        else:
+            if date_1 <= date_2:
+                res = fn.search_enter_date_hist(
+                    query, date_1, date_2, self.database, self.area)
+                if len(res) == 0:
+                    print("No hay resultados.")
+                    result_error = QMessageBox()
+                    result_error.setWindowTitle('Sin Resultados')
+                    result_error.setText('No se encontraron resultados')
+                    result_error.setIcon(QMessageBox.Warning)
+                    result_error.exec_()
+                else:
+                    self.update_search_table(res)
+                    self.search = res
             else:
                 date_error = QMessageBox()
                 date_error.setWindowTitle('Error de Fecha')
@@ -364,9 +442,10 @@ class Aduana(QWidget):
         if self.search:
             save_name = QFileDialog.getSaveFileName(
                 self, caption='Guardar Archivo',
-                directory='/'.join(os.path.expanduser('~').split('\\'))+'/Documents', 
+                directory='/'.join(os.path.expanduser('~').split('\\')
+                                   )+'/Documents',
                 filter="Excel (*.xlsx)"
-                 )
+            )
             fn.export_data(self.search, save_name[0])
         else:
             save_error = QMessageBox()
@@ -383,7 +462,7 @@ def main():
         style = f.read()
     app.setStyleSheet(style)
 
-    window = Aduana('M1') 
+    window = Aduana('M1')
     window.show()
     window.showMaximized()
     sys.exit(app.exec_())

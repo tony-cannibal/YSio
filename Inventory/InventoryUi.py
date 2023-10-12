@@ -118,19 +118,25 @@ class Inventory(QFrame):
         self.table_1.setFont(QFont("Consolas", 8))
         self.table_1.verticalHeader().setVisible(False)
 
-        self.label_main = QLabel()
-        self.label_main.setText(f"Inventario Mensual: {self.name}")
-        mainfont = QFont("Consolas", 16)
-        mainfont.setBold(True)
-        self.label_main.setFont(mainfont)
-        self.label_main.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_main.setStyleSheet(
-            """
-            background-color: white;
-            border: 1px solid #000;
-            border-radius: 2px;
-            """
-        )
+        # This Should Go in an if Statment to generate a true master id
+        if fn.check_master(self.equipo) is True:
+            pass
+            self.label_main = QComboBox()
+        else:
+            self.label_main = QLabel()
+            self.label_main.setText(f"Inventario Mensual: {self.name}")
+            mainfont = QFont("Consolas", 16)
+            mainfont.setBold(True)
+            self.label_main.setFont(mainfont)
+            self.label_main.setAlignment(QtCore.Qt.AlignCenter)
+            self.label_main.setStyleSheet(
+                """
+                background-color: white;
+                border: 1px solid #000;
+                border-radius: 2px;
+                """
+            )
+
         labelfont = QFont(QFont("Consolas", 17))
         labelfont.setBold(True)
 
