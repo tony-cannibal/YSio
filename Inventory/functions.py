@@ -9,7 +9,8 @@ except ImportError:
     import constants as cn
 
 
-def set_port():
+def set_port() -> str:
+    """set the COM port to use based on wich port return data"""
     ports = []
     for i in serial.tools.list_ports.comports():
         ports.append(i[0])
@@ -35,23 +36,12 @@ def set_port():
     return port
 
 
-def set_style(name):
-    if name == cn.areas[0] or name == cn.areas[7]:
-        return cn.corte_m1
-    elif name == cn.areas[1]:
-        return cn.medios_m1
-    elif name == cn.areas[2] or name == cn.areas[8]:
-        return cn.corte_m2
-    elif name == cn.areas[3]:
-        return cn.medios_m2
-    elif name == cn.areas[4]:
-        return cn.batt
-    elif name == cn.areas[6]:
-        return cn.materiales
-    elif name == cn.areas[5]:
-        return cn.ensamble
+def set_style(name: str) -> str:
+    """Set the background color"""
+    if name in cn.areas:
+        return cn.areaStyles[name]
     else:
-        return cn.default
+        return cn.areaStyles['default']
 
 
 def calc_amount(
@@ -119,7 +109,9 @@ def read_weight(puerto):
 
 def search_mats(data: dict, query: str) -> list:
     query = query.upper()
-    q = query.find('Q')
+    # q = query.find('Q')
+    if query == "":
+        return []
     res = []
     for i in data.values():
 
@@ -146,12 +138,9 @@ def get_materiales(database: dict) -> list:
 
 
 def get_materiales_cables(database: dict) -> list:
+    '''Get the material database, but only the cables.'''
     con = mariadb.connect(**database)
     cur = con.cursor()
-    # cur.execute(
-    #     "SELECT * FROM materiales where tipo = 'CABLE';")
-    # cur.execute(
-    #     "SELECT * FROM materiales where tipo = 'CABLE' OR tipo = 'CABLE SAM';")
     cur.execute(
         "SELECT * FROM materiales where tipo LIKE 'CABLE%';")
     res = cur.fetchall()
@@ -163,6 +152,7 @@ def get_materiales_cables(database: dict) -> list:
 
 
 def check_master(equipo):
+    '''Check if id is Master.'''
     if equipo == 'Master':
         return True
     else:
@@ -170,6 +160,7 @@ def check_master(equipo):
 
 
 def check_service(equipo):
+    '''Check if service id.'''
     if equipo == 'Service':
         return True
     else:
@@ -184,6 +175,7 @@ def check_cable(cable: str) -> bool:
 
 
 def get_qty(code: str, qcount: int) -> str:
+    '''Get the PKG amount from the bar code.'''
     start = 0
     end = 0
     if qcount == 2:
@@ -195,6 +187,7 @@ def get_qty(code: str, qcount: int) -> str:
 
 
 def get_subcode(code: str, qcount: int) -> str:
+    '''Extract the material specific code from the barcode.'''
     if code[-1] == "Q":
         code = code[:-2]
     start = 1
@@ -250,6 +243,7 @@ def manual_input(database, master):
 
 
 def get_history(maquina: str, equipo: str, db: dict):
+    '''Retrieves the record history based on date and machine number'''
     fecha = date.today().strftime("%Y-%m-%d") + '%'  # Fecha
     # print(maquina, equipo, fecha)
     con = mariadb.connect(**db)
@@ -265,12 +259,27 @@ def get_history(maquina: str, equipo: str, db: dict):
         res = cur.fetchall()
         history = []
         for i in res:
-            # print(i)
             history.append(list(i))
-        # print(history)
         return history
     else:
         return []
+
+
+def check_number(weight: str) -> str:
+    '''Checks the amount string, if unvalid character
+    ar added, these are omited'''
+    weight = weight
+    error = True
+    while error:
+        try:
+            float(weight)
+            error = False
+        except ValueError:
+            if len(weight) >= 1:
+                weight = weight[:-1]
+            else:
+                weight = '0'
+    return weight
 
 
 if __name__ == "__main__":

@@ -53,48 +53,57 @@ simbols = [
 ]
 
 # Area Styles
-corte_m1 = 'QFrame { background: rgb(37, 186, 35);}'
+areaStyles = {
+    'Corte M1': 'QFrame { background: rgb(37, 186, 35); }',
+    'Corte M2': 'QFrame { background: rgb(163, 46, 231); }',
+    'Cable M1': 'QFrame { background: rgb(37, 186, 35); }',
+    'Cable M2': 'QFrame { background: rgb(163, 46, 231); }',
+    'Medios M1': 'QFrame { background: rgb(255, 160, 8); }',
+    'Medios M2': 'QFrame { background: rgb(66, 126, 255); }',
+    'BATTERY': 'QFrame { background: rgb(66, 126, 255); }',
+    'Almacen': 'QFrame { background: rgb(222, 207, 38); }',
+    'ENSAMBLE': 'QFrame { background: rgb(255, 106, 231); }',
+    'default': 'QFrame { background: white; }'
+}
 
-corte_m2 = '''
-    QFrame {
-    background: rgb(163, 46, 231);
-    }
-'''
-medios_m1 = '''
-    QFrame {
-        background: rgb(255, 160, 8);
-    }
-'''
-
-medios_m2 = '''
-    QFrame {
-        background: rgb(66, 126, 255);
-    }
-'''
-
-batt = '''
-    QFrame {
-        background: rgb(66, 126, 255);
-    }
-'''
-
-materiales = '''
-    QFrame {
-        background: rgb(222, 207, 38);
-    }
-'''
-
-ensamble = '''
-    QFrame {
-        background: rgb(255, 106, 231);
-    }
-'''
-
-default = '''
-    QFrame {
-        background: white;
-    }
-'''
+# corte_m1 = '''
+#     QFrame { background: rgb(37, 186, 35);}'''
+#
+# corte_m2 = '''
+#     QFrame {
+#     background: rgb(163, 46, 231);
+#     }
+# '''
+# medios_m1 = '''
+#     QFrame {
+#         background: rgb(255, 160, 8);
+#     }
+# '''
+# medios_m2 = '''
+#     QFrame {
+#         background: rgb(66, 126, 255);
+#     }
+# '''
+# batt = '''
+#     QFrame {
+#         background: rgb(66, 126, 255);
+#     }
+# '''
+# materiales = '''
+#     QFrame {
+#         background: rgb(222, 207, 38);
+#     }
+# '''
+# ensamble = '''
+#     QFrame {
+#         background: rgb(255, 106, 231);
+#     }
+# '''
+# default = '''
+#     QFrame {
+#         background: white;
+#     }
+# '''
 
 
 theme = '''

@@ -453,6 +453,8 @@ class Inventory(QFrame):
 
     def search(self):
         code = self.line_1.text().strip()
+        # if code == '':
+        #     return
         first_char = code[0] if code != '' else ''
         length = len(code)
         if (self.config["manualInput"] is False and
@@ -497,8 +499,9 @@ class Inventory(QFrame):
         if len(res) == 0:
             self.current_sel = []
             self.table_update_label()
-
-        self.line_2.setFocus()
+            self.line_1.setFocus()
+        else:
+            self.line_2.setFocus()
 
     def table_update_label(self):
         sel = self.table_1.currentRow()
@@ -534,13 +537,12 @@ class Inventory(QFrame):
                 self.label_amount.setText("")
 
     def get_amount(self):
-        '''Calculate the amount.'''
+        '''Calculate the the amount of current selected item
+        based on the weight.'''
         if not self.current_sel:
-
             self.line_2.setText("0")
             # return
         weight = self.line_2.text().strip()
-        # print(self.current_sel)
 
         if self.radio2.isChecked():
             if not self.current_sel:
@@ -550,24 +552,8 @@ class Inventory(QFrame):
                 self.label_amount.setText(str(self.current_sel[7]))
                 return
 
-        if not weight:
-            return
-
-        if len(weight) == 1 and not weight.isnumeric():
-            self.line_2.setText("")
-            return
-
-        if weight.count(".") > 1:
-            self.line_2.setText(weight[:-1])
-            return
-
-        if weight[-1].isalpha():
-            self.line_2.setText(weight[:-1])
-            return
-
-        if weight[-1] in cn.simbols:
-            self.line_2.setText(weight[:-1])
-            return
+        weight = fn.check_number(weight)
+        self.line_2.setText(weight)
 
         if self.radio1.isChecked():
             if len(self.current_sel) == 0:
