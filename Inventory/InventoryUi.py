@@ -544,17 +544,21 @@ class Inventory(QFrame):
             # return
         weight = self.line_2.text().strip()
 
+        # If new.
         if self.radio2.isChecked():
             if not self.current_sel:
                 self.label_amount.setText('0')
                 return
             else:
+                weight = fn.check_number(weight)
+                self.line_2.setText(weight)
                 self.label_amount.setText(str(self.current_sel[7]))
                 return
 
         weight = fn.check_number(weight)
         self.line_2.setText(weight)
 
+        # If not new
         if self.radio1.isChecked():
             if len(self.current_sel) == 0:
                 return 0
