@@ -11,7 +11,8 @@ import setup as db
 class Controller:
     def __init__(self):
         self.path = "/".join(os.getcwd().split("\\"))
-        self.database = db.database(True)
+        self.database = db.database(True, self.path)  # Use local conf file
+
         self.window = None
         self.login = None
         self.aduana = None
@@ -29,9 +30,7 @@ class Controller:
         self.login.show()
 
     def show_main(self, equipo, port):
-        self.window = InventoryUi.Inventory(
-            equipo, port, self.path, self.database
-        )
+        self.window = InventoryUi.Inventory(equipo, port, self.path, self.database)
         self.login.close()
         self.window.show()
         self.window.showFullScreen()
